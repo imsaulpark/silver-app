@@ -66,6 +66,22 @@ button {
   outline: none;
 }
 
+table {
+  width: 100%;
+  border: 1px solid #444444;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  border: 1px, solid #444444;
+  padding: 10px;
+}
+
+.person-table__header {
+  background-color: var(--color-yellow);
+}
+
 /* Typography */
 
 h1 {
@@ -79,7 +95,7 @@ h2 {
   font-size: var(--font-medium);
   font-weight: var(--weight-semi-bold);
   color: var(--color-black);
-  margin: 8px 0;
+  margin: 8px 8px;
 }
 
 h3 {
@@ -107,12 +123,108 @@ p {
 }
 
 .navbar__logo {
+  margin: 15px;
 }
 
 .navbar__menu {
   display: flex;
+  margin: 5px;
 }
 
 .navbar__menu__item {
   margin: 0 10px;
+}
+
+.section-container {
+  display: flex;
+}
+
+#menu {
+  background-color: var(--color-pink);
+  min-width: 200px;
+  color: var(--color-white);
+  padding: 15px;
+}
+
+.menu-list__item {
+  margin-bottom: 10px;
+}
+
+#person-list {
+  min-width: 400px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.month-selection {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.person-control {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  margin-bottom: 10px;
+}
+
+.person-control__add,
+.person-control__remove {
+  width: 50%;
+  background-color: var(--color-light-grey);
+  margin: 5px;
+  padding: 3px;
+  color: var(--color-white);
+  border-radius: var(--size-border-radius);
+}
+
+#content {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-pink);
+  padding: 15px;
+}
+
+.content__top {
+  display: flex;
+  flex-direction: row;
+}
+
+.problem-category {
+  margin: 15px;
+}
+
+.table-box {
+  background-color: white;
+  padding: 15px;
+}
+
+.problem-category__table {
+  min-height: 300px;
+}
+
+.problems {
+  margin: 15px;
+  min-height: 400px;
+}
+
+.problems__table {
+  min-height: 300px;
+}
+.remark {
+  margin: 15px;
+  min-width: 400px;
+}
+
+.remark__content {
+  background-color: var(--color-white);
+  min-height: 336.36px;
+  padding: 10px;
+}
+
+.schedule {
+  padding: 15px;
 }
