@@ -51,11 +51,11 @@
             <section id="person-list">
                 <h2>대상자 목록</h2>
                 <div class="month-selection">
-                    <button class="month-selection__previous">
+                    <button onclick="prevCalendar()" class="month-selection__previous">
                         <i class="fas fa-chevron-left"></i>
                     </button>
-                    <span class="selected-date"> [2021년 02월] </span>
-                    <button class="month-selection__next">
+                    <span class="selected-date tbCalendarYM" > [2021년 02월] </span>
+                    <button onclick="nextCalendar()" class="month-selection__next">
                         <i class="fas fa-chevron-right"></i>
                     </button>
                 </div>
@@ -84,36 +84,36 @@
                         <div class="table-box">
                             <table border="1" class="problem-category__table">
                                 <tr>
-                                    <td colspan = "2">인지영역</td>
-                                    <td>문제선택</td>
+                                    <td colspan = "2" class="problem-header">인지영역</td>
+                                    <td class="problem-header">문제선택</td>
                                 </tr>
                                 <tr>
                                     <td rowspan = "2">인지활동(1)</td>
                                     <td>시지각</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                                 <tr>
                                     
                                     <td>주의집중력</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                                 <tr>
                                     <td rowspan = "3">인지활동(2)</td>
                                     <td>사고능력</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                                 <tr>
                                     <td>언어능력</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                                 <tr>
                                     <td>회상활동</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                                 <tr>
                                     <td>일상생활활동</td>
                                     <td>일상생활활동</td>
-                                    <td><button>문제선택</button></td>
+                                    <td><button class="problem__button">문제선택</button></td>
                                 </tr>
                             </table>
                         </div>
@@ -124,7 +124,7 @@
                         <div class="table-box">
                             <table border="1" class="problems__table">
                                 <tr>
-                                    <td colspan = "3">시지각(하) 문제 선택</td>
+                                    <td colspan = "3" class="problem-header">시지각(하) 문제 선택</td>
                                 </tr>
                                 <tr>
                                     <td>같음그림찾기(하)</td>
@@ -171,20 +171,15 @@
                 </div>
                 <div class="content__bottom">
                     <div class="schedule">
-                        <h2>2021년 2월</h2>
+                        <h2 class="tbCalendarYM" >2021년 2월</h2>
                         <div class="table-box">
                                 
-                            <table id="calendar" border="3" align="center" style="border-color:#3333FF ">
+                            <table id="calendar" border="1" align="center">
                                 <tr><!-- label은 마우스로 클릭을 편하게 해줌 -->
-                                    <td><label onclick="prevCalendar()"><</label></td>
-                                    <td align="center" id="tbCalendarYM" colspan="6">
-                                    yyyy년 m월</td>
-                                    <td><label onclick="nextCalendar()">>
-                                        
-                                    </label></td>
+
                                 </tr>
                                 <tr>
-                                    <td align="center">*</td>
+                                    <td align="center"></td>
                                     <td align="center"><font color ="#F79DC2">일</td>
                                     <td align="center">월</td>
                                     <td align="center">화</td>

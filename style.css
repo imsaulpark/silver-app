@@ -5,7 +5,7 @@
   --color-white: #ffffff;
   --color-light-white: #eeeeee;
   --color-dark-white: #bdbdbd;
-  --color-pink: #fe918d;
+  --color-pink: #f7f6e7;
   --color-dark-pink: #ff6863;
   --color-dark-grey: #4d4d4d;
   --color-grey: #616161;
@@ -79,7 +79,7 @@ td {
 }
 
 .person-table__header {
-  background-color: var(--color-yellow);
+  background-color: #f4f9f9;
 }
 
 /* Typography */
@@ -142,7 +142,7 @@ p {
 #menu {
   background-color: var(--color-pink);
   min-width: 200px;
-  color: var(--color-white);
+  color: var(--color-grey);
   padding: 15px;
 }
 
@@ -176,7 +176,7 @@ p {
   width: 50%;
   background-color: var(--color-light-grey);
   margin: 5px;
-  padding: 3px;
+  padding: 5px;
   color: var(--color-white);
   border-radius: var(--size-border-radius);
 }
@@ -204,6 +204,20 @@ p {
 
 .problem-category__table {
   min-height: 300px;
+  min-width: 350px;
+}
+
+.problem-header {
+  background-color: #f4f9f9;
+  text-align: center;
+  font-weight: var(--weight-semi-bold);
+}
+
+.problem__button {
+  background-color: var(--color-dark-grey);
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: var(--size-border-radius);
 }
 
 .problems {
@@ -213,6 +227,7 @@ p {
 
 .problems__table {
   min-height: 300px;
+  min-width: 399.09px;
 }
 .remark {
   margin: 15px;
@@ -227,4 +242,19 @@ p {
 
 .schedule {
   padding: 15px;
+}
+
+#calendar {
+  border-color: var(--color-light-grey);
+}
+
+.calendar__index {
+  background-color: #f4f9f9;
+  text-align: center;
+  width: 12.5%;
+}
+
+.calendar__number {
+  background-color: #f4f9f9;
+  width: 12.5%;
 }
