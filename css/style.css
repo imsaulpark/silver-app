@@ -211,6 +211,7 @@ p {
   background-color: #f4f9f9;
   text-align: center;
   font-weight: var(--weight-semi-bold);
+  height: 14.2%;
 }
 
 .problem__button {
@@ -226,18 +227,24 @@ p {
 }
 
 .problems__table {
-  min-height: 300px;
-  min-width: 399.09px;
+  min-height: 305px;
+  min-width: 500px;
 }
+
+.problems__td {
+  height: 35px;
+  width: 33.3%;
+}
+
 .remark {
   margin: 15px;
-  min-width: 400px;
 }
 
 .remark__content {
   background-color: var(--color-white);
   min-height: 336.36px;
-  padding: 10px;
+  max-width: 350px;
+  padding: 20px;
 }
 
 .schedule {
