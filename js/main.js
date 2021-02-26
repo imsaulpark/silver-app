@@ -155,7 +155,7 @@ function buildCalendar(){//현재 달 달력 만들기
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
     
-                        visual_problems.forEach(element => {
+                        thinking_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
                             option.text = element;
@@ -180,7 +180,7 @@ function buildCalendar(){//현재 달 달력 만들기
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
     
-                        visual_problems.forEach(element => {
+                        life_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
                             option.text = element;
@@ -252,7 +252,7 @@ function buildCalendar(){//현재 달 달력 만들기
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
     
-                        visual_problems.forEach(element => {
+                        thinking_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
                             option.text = element;
@@ -274,7 +274,7 @@ function buildCalendar(){//현재 달 달력 만들기
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
     
-                        visual_problems.forEach(element => {
+                        life_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
                             option.text = element;
