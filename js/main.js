@@ -15,7 +15,7 @@ person_add.addEventListener('click', (event) => {
 
     $.ajax({
 		type : 'GET',
-		url : '/center-learnings',
+		url : 'http://13.209.38.201:8080/center-learnings',
 		data : JSON.stringify(data),
 		contentType : 'application/json; charset=utf-8',
 		dataType : 'json'
