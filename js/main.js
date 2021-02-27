@@ -2,6 +2,8 @@
 var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
 var date = new Date();//today의 Date를 세어주는 역할
 
+get_member_list();  //대상자 목록 받아오기
+get_learning_list(5);   //시지각 영역별 문제 가져오기
 
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
@@ -11,7 +13,6 @@ let remembrance_problems = ['기념일 회상하기', '요리재료 맞추기', 
 let life_problems = ['시간 맞추기', '야외활동 함께하기', '실내활동 함께하기', '집안일 함께하기', '냉장고 식재료 찾기', '표정 맞추기', '실내운동 함께하기', '물건의 용도 알기'];
 
 let member_list;
-get_member_list();
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
 function get_member_list() {
@@ -27,12 +28,12 @@ function get_member_list() {
             member_list = r.data;
             make_member_table(r.data);
             // console.log(r.data);
-            alert('통신 성공');
+            // alert('통신 성공');
         } else {
-            alert('통신 실패');
+            // alert('통신 실패');
         }
     }).fail(function(r) {
-        alert('서버 오류');
+        // alert('서버 오류');
     });
 
 };
@@ -46,7 +47,7 @@ var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
     
 
 // 센터 러닝 스케줄 받아오기
-function get_center_learnings() {
+function get_learning_schedule() {
     let data = {
         "centerId":3,
         "start":today.getFullYear().toString()+"-"+today.getMonth().toString()+"-"+1,
@@ -61,18 +62,66 @@ function get_center_learnings() {
         dataType : 'json'
     }).done(function(r) {
         if (r.status == "OK") {
-            member_list = r.data;
-            make_member_table(r.data);
+            
+            set_learning_schedule(r.data);
             // console.log(r.data);
-            alert('통신 성공');
+            alert('센터 러닝 스케줄 통신 성공');
         } else {
-            alert('통신 실패');
+            alert('센터 러닝 스케줄 통신 성공 통신 실패');
         }
     }).fail(function(r) {
-        alert('서버 오류');
+        alert('센터 러닝 스케줄 통신 성공 서버 오류');
     });
 
 };
+
+//센터 러닝 스케줄 적용하기
+function set_learning_schedule(learning_schedule){
+    learning_schedule.forEach(daily_schedule => {
+        const select_box1 = document.querySelector('.'+daily_schedule.date+'.learning1');
+        const select_box2 = document.querySelector('.'+daily_schedule.date+'.learning2');
+        const select_box3 = document.querySelector('.'+daily_schedule.date+'.learning3');
+        select_box1.value=daily_schedule.learnings[0];
+        select_box2.value=daily_schedule.learnings[1];
+        select_box3.value=daily_schedule.learnings[2];
+    })
+}
+
+function collect_learning_schedule(){
+    let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+    let year = lastDate.getFullYear().toString();
+    let month = lastDate.getMonth().toString();
+    let endDay = lastDate.getDay().toString();
+    let learning_schedule = null;
+    for(let i=1; i<=endDay; i++){
+        let string_date = year+"-"+month+"-"+endDay;
+        const select_box1 = document.querySelector('.'+string_date+'.learning1');
+        const select_box2 = document.querySelector('.'+string_date+'.learning2');
+        const select_box3 = document.querySelector('.'+string_date+'.learning3');
+        learning_schedule.push({"date":string_date, "learnings":[select_box1.value,select_box2.value,select_box3.value]});
+    }
+    post_learning_schedule(learning_schedule);
+}
+
+// post learning_schedule
+function post_learning_schedule(data) {
+ 
+    $.ajax({
+		type : 'POST',
+		url : 'http://13.209.38.201:8080/center-learnings',
+		data : JSON.stringify(data),
+		contentType : 'application/json; charset=utf-8',
+		dataType : 'json'
+	}).done(function(r) {
+		if (r.status == "OK") {
+            alert('러닝 스케줄 통신 성공');
+		} else {
+			alert('러닝 스케줄 통신 실패');
+		}
+	}).fail(function(r) {
+		alert('러닝 스케줄 서버 오류');
+	});
+}
 
 
 // ajax communication example
@@ -196,7 +245,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise1");
+                        select.classList.add("learning1");
                         // console.log(temp_date);
                         //console.log(temp_date.toString());
                         visual_problems.forEach(element => {
@@ -226,7 +275,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise2");
+                        select.classList.add("learning2");
     
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -255,7 +304,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise3");
+                        select.classList.add("learning3");
                         
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -308,7 +357,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise1");
+                        select.classList.add("learning1");
         
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -333,7 +382,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise2");
+                        select.classList.add("learning2");
         
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -358,7 +407,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         const select = document.createElement('select');
                         const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
                         select.classList.add(temp_date);
-                        select.classList.add("exercise3");
+                        select.classList.add("learning3");
 
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -387,28 +436,51 @@ const life_btn = document.querySelector('.life__btn');
 make_problem_table(visual_problems);
 
 visual_btn.addEventListener('click', (event) => {
-    make_problem_table(visual_problems);
+    get_learning_list(5);
 });
 
 concentration_btn.addEventListener('click', (event) => {
-    make_problem_table(concentration_problems);
+    get_learning_list(6);
 });
 
 thinking_btn.addEventListener('click', (event) => {
-    make_problem_table(thinking_problems);
+    get_learning_list(7);
 });
 
 language_btn.addEventListener('click', (event) => {
-    make_problem_table(language_problems);
+    get_learning_list(8);
 });
 
 remembrance_btn.addEventListener('click', (event) => {
-    make_problem_table(remembrance_problems);
+    get_learning_list(9);
 });
 
 life_btn.addEventListener('click', (event) => {
-    make_problem_table(life_problems);
+    get_learning_list(10);
 });
+
+
+//러닝 목록 받아오기
+function get_learning_list(childrenId){
+    let data = {"childrenId":childrenId};
+    $.ajax({
+        type : 'GET',
+        url : 'http://13.209.38.201:8080/learnings',
+        data : data,
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json'
+    }).done(function(r) {
+        if (r.status == "OK") {
+            make_member_table(r.data);
+            console.log(r.data);
+            alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function(r) {
+        // alert('서버 오류');
+    });
+}
 
 function make_member_table(member_list){
     const member_table = document.querySelector('.person-table');
@@ -452,4 +524,3 @@ function make_problem_table(problems){
         cnt++;
     }
 }
-
