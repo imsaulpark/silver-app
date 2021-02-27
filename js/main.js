@@ -1,4 +1,8 @@
 
+var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
+var date = new Date();//today의 Date를 세어주는 역할
+
+
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
 let thinking_problems = ['물건개수 맞추기', '4x4스도쿠', '개수맞추기', '범주찾기', '주제와다른것찾기', '시장물건 계산하기', '주사위 계산하기', '열매개수세기', '숫자 나열하기'];
@@ -6,8 +10,72 @@ let language_problems = ['빈칸채우기', '초성맞추기', '동물속담맞�
 let remembrance_problems = ['기념일 회상하기', '요리재료 맞추기', '식재료 구분하기', '옛물건 회상하기', '정보 기억하기', '음식 회상하기', '사물회상하기', '계절 회상하기', '옛놀이 회상하기'];
 let life_problems = ['시간 맞추기', '야외활동 함께하기', '실내활동 함께하기', '집안일 함께하기', '냉장고 식재료 찾기', '표정 맞추기', '실내운동 함께하기', '물건의 용도 알기'];
 
+let member_list;
+get_member_list();
+// 처음에 화면 들어오고 나서 데이터 받아오기
+// 대상자 목록 받아오기
+function get_member_list() {
+    let data = {"centerId":3};
+    $.ajax({
+        type : 'GET',
+        url : 'http://13.209.38.201:8080/patients',
+        data : data,
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json'
+    }).done(function(r) {
+        if (r.status == "OK") {
+            member_list = r.data;
+            make_member_table(r.data);
+            // console.log(r.data);
+            alert('통신 성공');
+        } else {
+            alert('통신 실패');
+        }
+    }).fail(function(r) {
+        alert('서버 오류');
+    });
 
-// ajax communication
+};
+
+var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
+    //이번 달의 첫째 날,
+    //new를 쓰는 이유 : new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.     
+    //new를 쓰지 않았을때 이번달을 받아오려면 +1을 해줘야한다. 
+    //왜냐면 getMonth()는 0~11을 반환하기 때문
+    var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+    
+
+// 센터 러닝 스케줄 받아오기
+function get_center_learnings() {
+    let data = {
+        "centerId":3,
+        "start":today.getFullYear().toString()+"-"+today.getMonth().toString()+"-"+1,
+        "end":today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+0,
+    };
+
+    $.ajax({
+        type : 'GET',
+        url : 'http://13.209.38.201:8080/center-learnings',
+        data : data,
+        contentType : 'application/json; charset=utf-8',
+        dataType : 'json'
+    }).done(function(r) {
+        if (r.status == "OK") {
+            member_list = r.data;
+            make_member_table(r.data);
+            // console.log(r.data);
+            alert('통신 성공');
+        } else {
+            alert('통신 실패');
+        }
+    }).fail(function(r) {
+        alert('서버 오류');
+    });
+
+};
+
+
+// ajax communication example
 const person_add = document.querySelector('.person-control__add');
 person_add.addEventListener('click', (event) => {
     
@@ -21,8 +89,7 @@ person_add.addEventListener('click', (event) => {
 		dataType : 'json'
 	}).done(function(r) {
 		if (r.status == "OK") {
-            console.log(r.data[0].id);
-			alert('통신 성공');
+            alert('통신 성공');
 		} else {
 			alert('통신 실패');
 		}
@@ -32,10 +99,7 @@ person_add.addEventListener('click', (event) => {
 });
 
 
-var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
-var date = new Date();//today의 Date를 세어주는 역할
-prevCalendar();
-nextCalendar();
+buildCalendar();
 function prevCalendar() {//이전 달
 // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
 //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
@@ -72,7 +136,7 @@ function buildCalendar(){//현재 달 달력 만들기
             element.innerHTML = today.getFullYear() + "년 " + (today.getMonth() + 1) + "월"; 
     });
 
-        /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
+    /*while은 이번달이 끝나면 다음달로 넘겨주는 역할*/
     while (tbCalendar.rows.length > 2) {
     //열을 지워줌
     //기본 열 크기는 body 부분에서 2로 고정되어 있다.
@@ -117,6 +181,8 @@ function buildCalendar(){//현재 달 달력 만들기
                 //월화수목금토일을 7로 나눴을때 나머지가 0이면 cnt가 7번째에 위치함을 의미한다
                 cell.innerHTML = "<font color=skyblue>" + i
                 //7번째의 cell에만 색칠
+
+                // 인지활동(1) 영역 생성
                 row = calendar.insertRow();
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                 cell.innerHTML = "인지활동 (1)";
@@ -125,11 +191,14 @@ function buildCalendar(){//현재 달 달력 만들기
   
                 for (j=1; j<=7; j++){
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                    console.log("1:"+tempEmptyCnt+" , " + tbCalendar.rows.length);
-
+                    
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
-    
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise1");
+                        // console.log(temp_date);
+                        //console.log(temp_date.toString());
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
@@ -144,6 +213,7 @@ function buildCalendar(){//현재 달 달력 만들기
 
                 }
 
+                // 인지활동(2) 영역 생성
                 row = calendar.insertRow();
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                 cell.innerHTML = "인지활동 (2)";
@@ -154,6 +224,9 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise2");
     
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
@@ -169,6 +242,7 @@ function buildCalendar(){//현재 달 달력 만들기
 
                 }
 
+                // 일상 생활 활동 영역 생성
                 row = calendar.insertRow();
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                 cell.innerHTML = "일상 생활 활동";
@@ -179,7 +253,10 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
-    
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise3");
+                        
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
@@ -229,7 +306,10 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-    
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise1");
+        
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
@@ -251,7 +331,10 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-    
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise2");
+        
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
@@ -273,7 +356,10 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-    
+                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+                        select.classList.add(temp_date);
+                        select.classList.add("exercise3");
+
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
                             option.value = element;
@@ -324,6 +410,25 @@ life_btn.addEventListener('click', (event) => {
     make_problem_table(life_problems);
 });
 
+function make_member_table(member_list){
+    const member_table = document.querySelector('.person-table');
+    let count = 1;
+    member_list.forEach(member => {
+        const row = member_table.insertRow();
+        let cell = row.insertCell();
+        cell.innerHTML = count++;
+        cell = row.insertCell();
+        //체크박스 넣기
+        cell = row.insertCell();
+        cell.innerHTML = member.name;
+        cell = row.insertCell();
+        //담당자명 넣기
+        cell = row.insertCell();
+        //등급 넣기
+    });
+                        
+
+}
 
 function make_problem_table(problems){
 
