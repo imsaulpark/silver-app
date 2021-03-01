@@ -87,7 +87,10 @@ function set_learning_schedule(learning_schedule){
     })
 }
 
-function collect_learning_schedule(){
+// when the schedul_update button is clicked, collect schedule data and post
+const schedule_update = document.querySelector('.schedule-update');
+schedule_update.addEventListener('click', (event) => {
+
     let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
     let year = lastDate.getFullYear().toString();
     let month = lastDate.getMonth().toString();
@@ -95,13 +98,14 @@ function collect_learning_schedule(){
     let learning_schedule = null;
     for(let i=1; i<=endDay; i++){
         let string_date = year+"-"+month+"-"+endDay;
-        const select_box1 = document.querySelector('.'+string_date+'.learning1');
-        const select_box2 = document.querySelector('.'+string_date+'.learning2');
-        const select_box3 = document.querySelector('.'+string_date+'.learning3');
+        const select_box1 = document.querySelectorAll('.'+string_date+'.learning1');
+        const select_box2 = document.querySelectorAll('.'+string_date+'.learning2');
+        const select_box3 = document.querySelectorAll('.'+string_date+'.learning3');
         learning_schedule.push({"date":string_date, "learnings":[select_box1.value,select_box2.value,select_box3.value]});
     }
     post_learning_schedule(learning_schedule);
-}
+    
+});
 
 // post learning_schedule
 function post_learning_schedule(data) {

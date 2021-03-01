@@ -41,7 +41,7 @@
 
 body {
   margin: 0;
-  //font-family: "Open Sans", sans-serif;
+  /* font-family: "Open Sans", sans-serif; */
   cursor: default;
 }
 
@@ -251,6 +251,13 @@ p {
   padding: 15px;
 }
 
+.schedule__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
 #calendar {
   border-color: var(--color-light-grey);
 }
@@ -264,4 +271,22 @@ p {
 .calendar__number {
   background-color: #f4f9f9;
   width: 12.5%;
+}
+
+.schedule__right {
+  display: flex;
+  align-items: center;
+}
+
+.tbCalendarYM {
+  display: inline;
+}
+
+.schedule-update {
+  background-color: var(--color-light-grey);
+  margin: 5px;
+  padding: 5px 15px;
+  font-size: var(--font-small);
+  color: var(--color-white);
+  border-radius: var(--size-border-radius);
 }
