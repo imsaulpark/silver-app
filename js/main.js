@@ -95,12 +95,12 @@ schedule_update.addEventListener('click', (event) => {
     let year = lastDate.getFullYear().toString();
     let month = lastDate.getMonth().toString();
     let endDay = lastDate.getDay().toString();
-    let learning_schedule = null;
+    let learning_schedule = new Array();
     for(let i=1; i<=endDay; i++){
         let string_date = year+"-"+month+"-"+endDay;
-        const select_box1 = document.querySelectorAll('.'+string_date+'.learning1');
-        const select_box2 = document.querySelectorAll('.'+string_date+'.learning2');
-        const select_box3 = document.querySelectorAll('.'+string_date+'.learning3');
+        const select_box1 = document.getElementsByClassName(string_date, 'learning1');
+        const select_box2 = document.getElementsByClassName(string_date, 'learning2');
+        const select_box3 = document.getElementsByClassName(string_date, 'learning3');
         learning_schedule.push({"date":string_date, "learnings":[select_box1.value,select_box2.value,select_box3.value]});
     }
     post_learning_schedule(learning_schedule);
@@ -112,7 +112,7 @@ function post_learning_schedule(data) {
  
     $.ajax({
 		type : 'POST',
-		url : 'http://13.209.38.201:8080/center-learnings',
+		url : 'http://13.209.38.201:8080/learning-schedules/new',
 		data : JSON.stringify(data),
 		contentType : 'application/json; charset=utf-8',
 		dataType : 'json'
