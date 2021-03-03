@@ -19,7 +19,7 @@ function get_member_list() {
     let data = {"centerId":3};
     $.ajax({
         type : 'GET',
-        url : 'http://13.209.38.201:8080/patients',
+        url : 'http://13.209.38.201:8080/members/patients',
         data : data,
         contentType : 'application/json; charset=utf-8',
         dataType : 'json'
@@ -45,18 +45,21 @@ var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
     //왜냐면 getMonth()는 0~11을 반환하기 때문
     var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
     
-
+get_learning_schedule();
 // 센터 러닝 스케줄 받아오기
 function get_learning_schedule() {
+
+    let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+
     let data = {
         "centerId":3,
-        "start":today.getFullYear().toString()+"-"+today.getMonth().toString()+"-"+1,
-        "end":today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+0,
+        "start":lastDate.getFullYear().toString()+"-"+(lastDate.getMonth()+1).toString()+"-"+1,
+        "end":lastDate.getFullYear().toString()+"-"+(lastDate.getMonth()+1).toString()+"-"+lastDate.getDate().toString()
     };
 
     $.ajax({
         type : 'GET',
-        url : 'http://13.209.38.201:8080/center-learnings',
+        url : 'http://13.209.38.201:8080/learning-schedules',
         data : data,
         contentType : 'application/json; charset=utf-8',
         dataType : 'json'
@@ -67,10 +70,10 @@ function get_learning_schedule() {
             // console.log(r.data);
             alert('센터 러닝 스케줄 통신 성공');
         } else {
-            alert('센터 러닝 스케줄 통신 성공 통신 실패');
+            alert('센터 러닝 스케줄 통신 실패');
         }
     }).fail(function(r) {
-        alert('센터 러닝 스케줄 통신 성공 서버 오류');
+        alert('센터 러닝 스케줄 서버 오류');
     });
 
 };
@@ -78,9 +81,9 @@ function get_learning_schedule() {
 //센터 러닝 스케줄 적용하기
 function set_learning_schedule(learning_schedule){
     learning_schedule.forEach(daily_schedule => {
-        const select_box1 = document.querySelector('.'+daily_schedule.date+'.learning1');
-        const select_box2 = document.querySelector('.'+daily_schedule.date+'.learning2');
-        const select_box3 = document.querySelector('.'+daily_schedule.date+'.learning3');
+        const select_box1 = document.getElementsByClassName(daily_schedule.date, 'learning1');
+        const select_box2 = document.getElementsByClassName(daily_schedule.date, 'learning2');
+        const select_box3 = document.getElementsByClassName(daily_schedule.date, 'learning3');
         select_box1.value=daily_schedule.learnings[0];
         select_box2.value=daily_schedule.learnings[1];
         select_box3.value=daily_schedule.learnings[2];
@@ -94,7 +97,7 @@ schedule_update.addEventListener('click', (event) => {
     let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
     let year = lastDate.getFullYear().toString();
     let month = lastDate.getMonth().toString();
-    let endDay = lastDate.getDay().toString();
+    let endDay = lastDate.getDate().toString();
     let learning_schedule = new Array();
     for(let i=1; i<=endDay; i++){
         let string_date = year+"-"+month+"-"+endDay;
@@ -103,7 +106,10 @@ schedule_update.addEventListener('click', (event) => {
         const select_box3 = document.getElementsByClassName(string_date, 'learning3');
         learning_schedule.push({"date":string_date, "learnings":[select_box1.value,select_box2.value,select_box3.value]});
     }
-    post_learning_schedule(learning_schedule);
+
+    let body = {"centerId":3, "data": learning_schedule};
+
+    post_learning_schedule(body);
     
 });
 
