@@ -50,12 +50,18 @@ get_learning_schedule();
 function get_learning_schedule() {
 
     let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
+    let year = lastDate.getFullYear().toString();
+    let month = (lastDate.getMonth()+1).toString();
+    if(lastDate.getMonth()+1<10)
+        month = "0"+month;
+    let day = lastDate.getDate().toString();
 
     let data = {
         "centerId":3,
-        "start":lastDate.getFullYear().toString()+"-"+(lastDate.getMonth()+1).toString()+"-"+1,
-        "end":lastDate.getFullYear().toString()+"-"+(lastDate.getMonth()+1).toString()+"-"+lastDate.getDate().toString()
+        "start":year+"-"+month+"-01",
+        "end":year+"-"+month+"-"+day
     };
+
 
     $.ajax({
         type : 'GET',
@@ -65,9 +71,8 @@ function get_learning_schedule() {
         dataType : 'json'
     }).done(function(r) {
         if (r.status == "OK") {
-            
+            console.log(r.data);
             set_learning_schedule(r.data);
-            // console.log(r.data);
             alert('센터 러닝 스케줄 통신 성공');
         } else {
             alert('센터 러닝 스케줄 통신 실패');
@@ -96,19 +101,25 @@ schedule_update.addEventListener('click', (event) => {
 
     let lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
     let year = lastDate.getFullYear().toString();
-    let month = lastDate.getMonth().toString();
+    let month = (lastDate.getMonth()+1).toString();
+    if(lastDate.getMonth()+1<10)
+        month = "0"+month;
     let endDay = lastDate.getDate().toString();
     let learning_schedule = new Array();
     for(let i=1; i<=endDay; i++){
-        let string_date = year+"-"+month+"-"+endDay;
-        const select_box1 = document.getElementsByClassName(string_date, 'learning1');
-        const select_box2 = document.getElementsByClassName(string_date, 'learning2');
-        const select_box3 = document.getElementsByClassName(string_date, 'learning3');
-        learning_schedule.push({"date":string_date, "learnings":[select_box1.value,select_box2.value,select_box3.value]});
+        let day = i;
+        if(i<10)
+            day = "0"+day;
+        let string_date = year+"-"+month+"-"+day;
+        const select_box = document.getElementsByClassName(string_date);
+        console.log(select_box[0]);
+        console.log(select_box[1]);
+        console.log(select_box[2]);
+        learning_schedule.push({"date":string_date, "learnings":[select_box[0].value,select_box[1].value,select_box[2].value]});
     }
 
     let body = {"centerId":3, "data": learning_schedule};
-
+    console.log(body);
     post_learning_schedule(body);
     
 });
@@ -248,19 +259,27 @@ function buildCalendar(){//현재 달 달력 만들기
                 cell.classList.add('calendar__index');
                 let tempEmptyCnt = emptyCnt;
   
+                let year = today.getFullYear().toString();
+                let month = (today.getMonth()+1).toString();
+                if(today.getMonth()+1<10)
+                    month = "0"+month;
+
                 for (j=1; j<=7; j++){
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        let day = i-7+j;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
                         select.classList.add(temp_date);
                         select.classList.add("learning1");
                         // console.log(temp_date);
                         //console.log(temp_date.toString());
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -283,13 +302,16 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        let day = i-7+j;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
                         select.classList.add(temp_date);
                         select.classList.add("learning2");
     
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -312,13 +334,16 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt==0 || tbCalendar.rows.length >= 7){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i-7+j);
+                        let day = i-7+j;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
                         select.classList.add(temp_date);
                         select.classList.add("learning3");
                         
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -361,17 +386,25 @@ function buildCalendar(){//현재 달 달력 만들기
                 cell.classList.add('calendar__index');
                 tempEmptyCnt = 7-lastEmptyCnt;
   
+                let year = today.getFullYear().toString();
+                let month = (today.getMonth()+1).toString();
+
                 for (j=1; j<=7; j++){
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+
+                        let day = i+j-(7-lastEmptyCnt)-1;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
+
                         select.classList.add(temp_date);
                         select.classList.add("learning1");
         
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -390,13 +423,18 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+                        
+                        let day = i+j-(7-lastEmptyCnt)-1;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
+
                         select.classList.add(temp_date);
                         select.classList.add("learning2");
         
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -415,13 +453,18 @@ function buildCalendar(){//현재 달 달력 만들기
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
                     if(tempEmptyCnt>0){
                         const select = document.createElement('select');
-                        const temp_date = today.getFullYear().toString()+"-"+(today.getMonth()+1).toString()+"-"+(i+j-(7-lastEmptyCnt)-1);
+                        
+                        let day = i+j-(7-lastEmptyCnt)-1;
+                        if(day<10)
+                            day="0"+day;
+                        const temp_date = year+"-"+month+"-"+day;
+
                         select.classList.add(temp_date);
                         select.classList.add("learning3");
 
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = element;
+                            option.value = 1;
                             option.text = element;
                             select.appendChild(option);
                         });
