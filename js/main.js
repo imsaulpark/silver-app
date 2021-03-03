@@ -1,9 +1,9 @@
 
 var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
 var date = new Date();//today의 Date를 세어주는 역할
+let is_schedule_exsist = false;
 
 get_member_list();  //대상자 목록 받아오기
-get_learning_list(5);   //시지각 영역별 문제 가져오기
 
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
@@ -11,6 +11,12 @@ let thinking_problems = ['물건개수 맞추기', '4x4스도쿠', '개수맞추
 let language_problems = ['빈칸채우기', '초성맞추기', '동물속담맞추기', '끝말잇기', '단어와 그림맞추기', '단어만들기', '명언따라쓰고읽기', '문장따라말하기'];
 let remembrance_problems = ['기념일 회상하기', '요리재료 맞추기', '식재료 구분하기', '옛물건 회상하기', '정보 기억하기', '음식 회상하기', '사물회상하기', '계절 회상하기', '옛놀이 회상하기'];
 let life_problems = ['시간 맞추기', '야외활동 함께하기', '실내활동 함께하기', '집안일 함께하기', '냉장고 식재료 찾기', '표정 맞추기', '실내운동 함께하기', '물건의 용도 알기'];
+
+let category4 = new Array();
+let category5 = new Array();
+let category6 = new Array();
+let category7 = new Array();
+let category8 = new Array();
 
 let member_list;
 // 처음에 화면 들어오고 나서 데이터 받아오기
@@ -38,6 +44,53 @@ function get_member_list() {
 
 };
 
+$.ajax({
+    type : 'GET',
+    url : 'http://13.209.38.201:8080/learnings/all',
+    contentType : 'application/json; charset=utf-8',
+    dataType : 'json'
+}).done(function(r) {
+    if (r.status == "OK") {
+        //console.log(r.data);
+        set_learning_category(r.data);
+        // console.log(r.data);
+        // alert('통신 성공');
+    } else {
+        // alert('통신 실패');
+    }
+}).fail(function(r) {
+    // alert('서버 오류');
+});
+
+function set_learning_category(data){
+
+    data.forEach(learning => {
+        switch(learning.categoryId){
+            case 4:
+                category4.push({"id":learning.id, "name":learning.name});
+                break;
+            case 5:
+                category5.push({"id":learning.id, "name":learning.name});
+                break;
+            case 6:
+                category6.push({"id":learning.id, "name":learning.name});
+                break;
+            case 7:
+                category7.push({"id":learning.id, "name":learning.name});
+                break;
+            case 8:
+                category8.push({"id":learning.id, "name":learning.name});
+                break;
+            default:
+                break;
+        }
+    });
+    //defualt 러닝 설정
+    make_problem_table(category4);
+    //console.log(category4);
+
+}
+
 var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
     //이번 달의 첫째 날,
     //new를 쓰는 이유 : new를 쓰면 이번달의 로컬 월을 정확하게 받아온다.     
@@ -45,7 +98,6 @@ var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
     //왜냐면 getMonth()는 0~11을 반환하기 때문
     var lastDate = new Date(today.getFullYear(),today.getMonth()+1,0);
     
-get_learning_schedule();
 // 센터 러닝 스케줄 받아오기
 function get_learning_schedule() {
 
@@ -72,7 +124,14 @@ function get_learning_schedule() {
     }).done(function(r) {
         if (r.status == "OK") {
             console.log(r.data);
-            set_learning_schedule(r.data);
+
+            if(r.data.length==0){
+                is_schedule_exsist = false;
+            }else{
+                is_schedule_exsist = true;
+                set_learning_schedule(r.data);
+            }
+
             alert('센터 러닝 스케줄 통신 성공');
         } else {
             alert('센터 러닝 스케줄 통신 실패');
@@ -83,15 +142,14 @@ function get_learning_schedule() {
 
 };
 
+
 //센터 러닝 스케줄 적용하기
 function set_learning_schedule(learning_schedule){
     learning_schedule.forEach(daily_schedule => {
-        const select_box1 = document.getElementsByClassName(daily_schedule.date, 'learning1');
-        const select_box2 = document.getElementsByClassName(daily_schedule.date, 'learning2');
-        const select_box3 = document.getElementsByClassName(daily_schedule.date, 'learning3');
-        select_box1.value=daily_schedule.learnings[0];
-        select_box2.value=daily_schedule.learnings[1];
-        select_box3.value=daily_schedule.learnings[2];
+        const select_box = document.getElementsByClassName(daily_schedule.date);
+        select_box[0].value=daily_schedule.learningIds[0];
+        select_box[1].value=daily_schedule.learningIds[1];
+        select_box[2].value=daily_schedule.learningIds[2];
     })
 }
 
@@ -112,16 +170,15 @@ schedule_update.addEventListener('click', (event) => {
             day = "0"+day;
         let string_date = year+"-"+month+"-"+day;
         const select_box = document.getElementsByClassName(string_date);
-        console.log(select_box[0]);
-        console.log(select_box[1]);
-        console.log(select_box[2]);
-        learning_schedule.push({"date":string_date, "learnings":[select_box[0].value,select_box[1].value,select_box[2].value]});
+        learning_schedule.push({"date":string_date, "learningIds":[select_box[0].value,select_box[1].value,select_box[2].value]});
     }
 
     let body = {"centerId":3, "data": learning_schedule};
     console.log(body);
-    post_learning_schedule(body);
-    
+    if(is_schedule_exsist)
+        put_learning_schedule(body);
+    else
+        post_learning_schedule(body);
 });
 
 // post learning_schedule
@@ -130,6 +187,28 @@ function post_learning_schedule(data) {
     $.ajax({
 		type : 'POST',
 		url : 'http://13.209.38.201:8080/learning-schedules/new',
+		data : JSON.stringify(data),
+		contentType : 'application/json; charset=utf-8',
+		dataType : 'json'
+	}).done(function(r) {
+		if (r.status == "OK") {
+            is_schedule_exsist=true;
+            alert('러닝 스케줄 통신 성공');
+		} else {
+			alert('러닝 스케줄 통신 실패');
+		}
+	}).fail(function(r) {
+		alert('러닝 스케줄 서버 오류');
+	});
+}
+
+
+// put learning_schedule
+function put_learning_schedule(data) {
+ 
+    $.ajax({
+		type : 'PUT',
+		url : 'http://13.209.38.201:8080/learning-schedules/present',
 		data : JSON.stringify(data),
 		contentType : 'application/json; charset=utf-8',
 		dataType : 'json'
@@ -170,12 +249,15 @@ person_add.addEventListener('click', (event) => {
 
 
 buildCalendar();
+get_learning_schedule();
+
 function prevCalendar() {//이전 달
 // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
 //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
 //getMonth()는 현재 달을 받아 오므로 이전달을 출력하려면 -1을 해줘야함
     today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
     buildCalendar(); //달력 cell 만들어 출력 
+    get_learning_schedule();
 }
 
 function nextCalendar() {//다음 달
@@ -184,6 +266,7 @@ function nextCalendar() {//다음 달
     //getMonth()는 현재 달을 받아 오므로 다음달을 출력하려면 +1을 해줘야함
         today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
         buildCalendar();//달력 cell 만들어 출력
+        get_learning_schedule();
 }
 function buildCalendar(){//현재 달 달력 만들기
     var doMonth = new Date(today.getFullYear(),today.getMonth(),1);
@@ -275,11 +358,9 @@ function buildCalendar(){//현재 달 달력 만들기
                         const temp_date = year+"-"+month+"-"+day;
                         select.classList.add(temp_date);
                         select.classList.add("learning1");
-                        // console.log(temp_date);
-                        //console.log(temp_date.toString());
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -311,7 +392,7 @@ function buildCalendar(){//현재 달 달력 만들기
     
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -343,7 +424,7 @@ function buildCalendar(){//현재 달 달력 만들기
                         
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -388,6 +469,8 @@ function buildCalendar(){//현재 달 달력 만들기
   
                 let year = today.getFullYear().toString();
                 let month = (today.getMonth()+1).toString();
+                if(today.getMonth()+1<10)
+                    month = "0"+month;
 
                 for (j=1; j<=7; j++){
                     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
@@ -404,7 +487,7 @@ function buildCalendar(){//현재 달 달력 만들기
         
                         visual_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -434,7 +517,7 @@ function buildCalendar(){//현재 달 달력 만들기
         
                         thinking_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -464,7 +547,7 @@ function buildCalendar(){//현재 달 달력 만들기
 
                         life_problems.forEach(element => {
                             const option = document.createElement("option");
-                            option.value = 1;
+                            option.value = 17;
                             option.text = element;
                             select.appendChild(option);
                         });
@@ -479,38 +562,34 @@ function buildCalendar(){//현재 달 달력 만들기
 }
 
 // problem category button clicked
-const visual_btn = document.querySelector('.visual__btn');
-const concentration_btn = document.querySelector('.concentration__btn');
-const thinking_btn = document.querySelector('.thinking__btn');
-const language_btn = document.querySelector('.language__btn');
-const remembrance_btn = document.querySelector('.remembrance__btn');
-const life_btn = document.querySelector('.life__btn');
+const category4_btn = document.querySelector('.category4__btn');
+const category5_btn = document.querySelector('.category5__btn');
+const category6_btn = document.querySelector('.category6__btn');
+const category7_btn = document.querySelector('.category7__btn');
+const category8_btn = document.querySelector('.category8__btn');
 
 make_problem_table(visual_problems);
 
-visual_btn.addEventListener('click', (event) => {
-    get_learning_list(5);
+category4_btn.addEventListener('click', (event) => {
+    make_problem_table(category4);
 });
 
-concentration_btn.addEventListener('click', (event) => {
-    get_learning_list(6);
+category5_btn.addEventListener('click', (event) => {
+    make_problem_table(category5);
 });
 
-thinking_btn.addEventListener('click', (event) => {
-    get_learning_list(7);
+category6_btn.addEventListener('click', (event) => {
+    make_problem_table(category6);
 });
 
-language_btn.addEventListener('click', (event) => {
-    get_learning_list(8);
+category7_btn.addEventListener('click', (event) => {
+    make_problem_table(category7);
 });
 
-remembrance_btn.addEventListener('click', (event) => {
-    get_learning_list(9);
+category8_btn.addEventListener('click', (event) => {
+    make_problem_table(category8);
 });
 
-life_btn.addEventListener('click', (event) => {
-    get_learning_list(10);
-});
 
 
 //러닝 목록 받아오기
@@ -571,7 +650,7 @@ function make_problem_table(problems){
         cell = row.insertCell();
         cell.classList.add('problems__td');
         if(cnt<problems.length){
-            cell.innerHTML = problems[cnt];
+            cell.innerHTML = problems[cnt].name;
         }
 
         cnt++;
