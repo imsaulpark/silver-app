@@ -18,6 +18,7 @@ let category6 = new Array();
 let category7 = new Array();
 let category8 = new Array();
 
+
 let member_list;
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
