@@ -243,7 +243,7 @@ p {
 .remark__content {
   background-color: var(--color-white);
   min-height: 336.36px;
-  max-width: 350px;
+  min-width: 390px;
   padding: 20px;
 }
 
@@ -289,4 +289,40 @@ p {
   font-size: var(--font-small);
   color: var(--color-white);
   border-radius: var(--size-border-radius);
+}
+
+.bo_w_select {
+  width: 100%; /* 가로 사이즈 */
+  padding: 10px; /* 내부여백 */
+  padding-left: 12px;
+  border: 1px solid #ddd;
+  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
+  background-size: 30px; /* 화살표 크기 */
+  border-radius: 4px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 12px;
+  color: #000;
+  outline: none;
+}
+.bo_w_select:hover {
+  border: 1px solid #aaa;
+} /* 마우스오버 */
+
+/* personal_member */
+#person-search {
+  min-width: 700px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+#person-list2 {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-pink);
+  padding: 30px;
+  min-width: 1300px;
 }
