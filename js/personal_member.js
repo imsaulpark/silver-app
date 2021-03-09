@@ -44,8 +44,10 @@ function make_member_table(member_list) {
         const btn = document.createElement("button");
         const text = document.createTextNode("탈퇴");
         btn.appendChild(text);
+        btn.classList.add('drop-btn');
         // button.innerText('탈퇴');
         cell.appendChild(btn);
+        cell.classList.add('transparent-border');
     });
 
 

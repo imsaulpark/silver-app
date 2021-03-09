@@ -38,11 +38,14 @@
 * {
   box-sizing: border-box;
 }
-
+html,
 body {
   margin: 0;
   /* font-family: "Open Sans", sans-serif; */
   cursor: default;
+  height: 100%;
+  width: 100%;
+  /* background-color: pink; */
 }
 
 a {
@@ -76,6 +79,7 @@ th,
 td {
   border: 1px, solid #444444;
   padding: 10px;
+  text-align: center;
 }
 
 .person-table__header {
@@ -142,6 +146,7 @@ p {
 #menu {
   background-color: var(--color-pink);
   min-width: 200px;
+  min-height: 1400px;
   color: var(--color-grey);
   padding: 15px;
 }
@@ -311,6 +316,65 @@ p {
   border: 1px solid #aaa;
 } /* 마우스오버 */
 
+/* personal-member page */
+
+.person-search__box {
+  display: flex;
+  padding-top: 20px;
+}
+
+.person-search__box__button {
+  display: flex;
+  align-items: center;
+  width: 20%;
+  justify-content: center;
+  background-color: var(--color-dark-grey);
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: var(--size-border-radius);
+}
+
+.search-content {
+  width: 80%;
+}
+
+.search-content__filter {
+  padding: 10px; /* 내부여백 */
+  width: 25%;
+  padding-left: 12px;
+  border: 1px solid #ddd;
+  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
+  background-size: 30px; /* 화살표 크기 */
+  border-radius: 4px;
+  box-sizing: border-box;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  font-size: 12px;
+  color: #000;
+  outline: none;
+  text-align-last: center;
+  text-align: center;
+  -ms-text-align-last: center;
+  -moz-text-align-last: center;
+}
+
+.search-content__text {
+  width: 60%;
+  padding: 10px; /* 내부여백 */
+  width: 70%;
+  padding-left: 12px;
+  border: 1px solid #ddd;
+  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
+  background-size: 30px; /* 화살표 크기 */
+  border-radius: 4px;
+  box-sizing: border-box;
+  appearance: none;
+  font-size: 12px;
+  color: #000;
+  outline: none;
+}
+
 /* personal_member */
 #person-search {
   min-width: 700px;
@@ -325,4 +389,43 @@ p {
   background-color: var(--color-pink);
   padding: 30px;
   min-width: 1300px;
+  min-height: 100%;
+}
+
+.transparent-border {
+  border-right: transparent;
+  width: 120px;
+}
+
+.person-table__header__number {
+  width: 100px;
+}
+
+.person-table__header__id {
+  width: 150px;
+}
+
+.person-table__header__name {
+  width: 150px;
+}
+
+.person-table__header__email {
+  width: 230px;
+}
+
+.person-table__header__phone {
+  width: 230px;
+}
+
+.person-table__header__approval {
+  width: 150px;
+}
+
+.drop-btn {
+  background-color: red;
+  width: 100px;
+  height: 30px;
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: var(--size-border-radius);
 }

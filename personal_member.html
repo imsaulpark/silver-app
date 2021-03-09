@@ -53,7 +53,6 @@
             <section id="person-search">
                 <h2>대상자 검색</h2>
                 <div class="person-search__box">
-                    <span>검색어</span>
                     <div class="search-content">
                         <select name="search-filter" class="search-content__filter">
                             <option value="none">=== 선택 ===</option>
@@ -65,6 +64,7 @@
                         </select>
                         <input type="text" class="search-content__text">
                     </div>
+                    <button class="person-search__box__button">검색</button>
                 </div>
 
             </section>
@@ -75,13 +75,14 @@
                 <h2>대상자 목록</h2>
 
                 <table border="1" class="person-table">
-                    <th class="person-table__header">번호</th>
-                    <th class="person-table__header">아이디</th>
-                    <th class="person-table__header">이름</th>
-                    <th class="person-table__header">이메일</th>
-                    <th class="person-table__header">핸드폰</th>
-                    <th class="person-table__header">승인</th>
+                    <th class="person-table__header person-table__header__number">번호</th>
+                    <th class="person-table__header person-table__header__id">아이디</th>
+                    <th class="person-table__header person-table__header__name">이름</th>
+                    <th class="person-table__header person-table__header__email">이메일</th>
+                    <th class="person-table__header person-table__header__phone">핸드폰</th>
+                    <th class="person-table__header person-table__header__approval">승인</th>
                 </table>
             </section>
+        </div>
 </body>
 </html>
