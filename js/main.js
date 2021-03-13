@@ -558,38 +558,42 @@ function buildCalendar() {//현재 달 달력 만들기
                     tempEmptyCnt--;
                 }
             }
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "일상 생활 활동";
-            cell.classList.add('calendar__index');
-            tempEmptyCnt = 7 - lastEmptyCnt;
-
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt > 0) {
-                    const select = document.createElement('select');
-
-                    let day = i + j - (7 - lastEmptyCnt) - 1;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-
-                    select.classList.add(temp_date);
-                    select.classList.add("learning3");
-                    select.classList.add("bo_w_select");
-
-                    life_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
-
-                    cell.appendChild(select);
-                    tempEmptyCnt--;
-                }
-            }
+            create_schedule_row("오후 (1)",lastEmptyCnt);
             break;
+        }
+    }
+}
+
+function create_schedule_row(learning_time,lastEmptyCnt,year,month,day) {
+    row = calendar.insertRow();
+    cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+    cell.innerHTML = learning_time;
+    cell.classList.add('calendar__index');
+    tempEmptyCnt = 7 - lastEmptyCnt;
+
+    for (j = 1; j <= 7; j++) {
+        cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+        if (tempEmptyCnt > 0) {
+            const select = document.createElement('select');
+
+            let day = i + j - (7 - lastEmptyCnt) - 1;
+            if (day < 10)
+                day = "0" + day;
+            const temp_date = year + "-" + month + "-" + day;
+
+            select.classList.add(temp_date);
+            select.classList.add("learning3");
+            select.classList.add("bo_w_select");
+
+            life_problems.forEach(element => {
+                const option = document.createElement("option");
+                option.value = 17;
+                option.text = element;
+                select.appendChild(option);
+            });
+
+            cell.appendChild(select);
+            tempEmptyCnt--;
         }
     }
 }
