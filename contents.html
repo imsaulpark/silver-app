@@ -15,7 +15,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="js/personal_member.js" defer></script>
+    <script src="js/contents.js" defer></script>
 </head>
 <body>
         <!-- NavBar -->
@@ -58,39 +58,70 @@
             </section>
 
             <!-- 대상자 검색 -->
-            <section id="person-search">
-                <h2>대상자 검색</h2>
-                <div class="person-search__box">
-                    <div class="search-content">
-                        <select name="search-filter" class="search-content__filter">
-                            <option value="none">=== 선택 ===</option>
-                            <option value="id">아이디</option>
-                            <option value="name">이름</option>
-                            <option value="email">이메일</option>
-                            <option value="phone">핸드폰</option>
-                            <option value="approval">승인여부</option>
-                        </select>
-                        <input type="text" class="search-content__text">
+            <section id="problem-category">
+                <div class="content__top">
+                    <div class="problem-category">
+                        <h2>문제 영역</h2>
+                        <div class="table-box">
+                            <table border="1" class="problem-category__table">
+                                <tr>
+                                    <td class="problem-header">제공 영역</td>
+                                    <td class="problem-header">영역 분류</td>
+                                    <td class="problem-header">문제선택</td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">인지활동</td>
+                                    <td>시지각 영역</td>
+                                    <td><button class="category1__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>주의 집중력 영역</td>
+                                    <td><button class="category2__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>언어 영역</td>
+                                    <td><button class="category3__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>회상 영역</td>
+                                    <td><button class="category4__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td rowspan="4">특별활동</td>
+                                    <td>신체활동</td>
+                                    <td><button class="category5__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>만들기</td>
+                                    <td><button class="category6__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>요리</td>
+                                    <td><button class="category7__btn">문제선택</button></td>
+                                </tr>
+                                <tr>
+                                    <td>특화</td>
+                                    <td><button class="category8__btn">문제선택</button></td>
+                                </tr>
+                            </table>
+                        </div>
                     </div>
-                    <button class="person-search__box__button">검색</button>
-                </div>
 
             </section>
 
 
             <!-- Person List -->
-            <section id="person-list2">
-                <h2>대상자 목록</h2>
+            <section id="problem-list">
+                <h2>문제 정보</h2>
 
-                <table border="1" class="person-table">
-                    <th class="person-table__header person-table__header__number">번호</th>
-                    <th class="person-table__header person-table__header__id">아이디</th>
-                    <th class="person-table__header person-table__header__name">이름</th>
-                    <th class="person-table__header person-table__header__email">이메일</th>
-                    <th class="person-table__header person-table__header__phone">핸드폰</th>
-                    <th class="person-table__header person-table__header__approval">승인</th>
+                <table border="1" class="problem-table">
+                    <th class="person-table__header person-table__header__id">문제 이름</th>
+                    <th class="person-table__header person-table__header__name">간단 설명</th>
+                    <th class="person-table__header person-table__header__email">자세한 설명</th>
+                    <th class="person-table__header person-table__header__phone">유튜브 링크</th>
+                    <th class="person-table__header person-table__header__approval">교보재 파일</th>
                 </table>
-            </section>
+            </section> 
         </div>
 </body>
 </html>

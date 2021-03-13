@@ -429,3 +429,13 @@ p {
   padding: 1px 10px;
   border-radius: var(--size-border-radius);
 }
+
+/* contents page */
+#problem-list {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-pink);
+  padding: 30px;
+  min-width: 1300px;
+  min-height: 100%;
+}
