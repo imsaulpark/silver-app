@@ -365,8 +365,6 @@ function buildCalendar() {//현재 달 달력 만들기
             cell.innerHTML = "<font color=skyblue>" + i
             //7번째의 cell에만 색칠
 
-            let tempEmptyCnt = emptyCnt;
-
             let year = today.getFullYear().toString();
             let month = (today.getMonth() + 1).toString();
             if (today.getMonth() + 1 < 10)
@@ -431,7 +429,7 @@ function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
 
             for (j = 1; j <= 7; j++) {
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 7) {
+                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 8) {
                     const select = document.createElement('select');
                     let day = i - 7 + j;
                     if (day < 10)
