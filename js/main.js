@@ -1,9 +1,12 @@
 
+let learning_list = new Array();
 var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
 var date = new Date();//today의 Date를 세어주는 역할
 let is_schedule_exsist = false;
 
+get_all_learning_list();
 get_member_list();  //대상자 목록 받아오기
+get_learning_schedule();
 
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
@@ -64,25 +67,25 @@ function make_member_table(member_list) {
 
 
 }
-
-$.ajax({
-    type: 'GET',
-    url: 'http://13.209.38.201:8080/learnings/all',
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json'
-}).done(function (r) {
-    if (r.status == "OK") {
-        //console.log(r.data);
-        set_learning_category(r.data);
-        // console.log(r.data);
-        // alert('통신 성공');
-    } else {
-        // alert('통신 실패');
-    }
-}).fail(function (r) {
-    // alert('서버 오류');
-});
-
+function get_all_learning_list() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/learnings/all',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            //console.log(r.data);
+            set_learning_category(r.data);
+            // console.log(r.data);
+            // alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        // alert('서버 오류');
+    });
+}
 function set_learning_category(data) {
 
     category4.push({ "id": 0, "name": '-' });
@@ -92,6 +95,7 @@ function set_learning_category(data) {
     category8.push({ "id": 0, "name": '-' });
     
     data.forEach(learning => {
+        learning_list.push({ "id": learning.id, "name": learning.name });   
         switch (learning.categoryId) {
             case 4:
                 category4.push({ "id": learning.id, "name": learning.name });
@@ -112,8 +116,10 @@ function set_learning_category(data) {
                 break;
         }
     });
+    console.log(learning_list);
     //defualt 러닝 설정
     make_problem_table(category4);
+    buildCalendar();
     //console.log(category4);
 
 }
@@ -275,9 +281,6 @@ person_add.addEventListener('click', (event) => {
 });
 
 
-buildCalendar();
-get_learning_schedule();
-
 function prevCalendar() {//이전 달
     // 이전 달을 today에 값을 저장하고 달력에 today를 넣어줌
     //today.getFullYear() 현재 년도//today.getMonth() 월  //today.getDate() 일 
@@ -362,11 +365,6 @@ function buildCalendar() {//현재 달 달력 만들기
             cell.innerHTML = "<font color=skyblue>" + i
             //7번째의 cell에만 색칠
 
-            // 인지활동(1) 영역 생성
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "인지활동 (1)";
-            cell.classList.add('calendar__index');
             let tempEmptyCnt = emptyCnt;
 
             let year = today.getFullYear().toString();
@@ -374,97 +372,12 @@ function buildCalendar() {//현재 달 달력 만들기
             if (today.getMonth() + 1 < 10)
                 month = "0" + month;
 
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
 
-                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 7) {
-                    const select = document.createElement('select');
-                    let day = i - 7 + j;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-                    select.classList.add(temp_date);
-                    select.classList.add("learning1");
-                    select.classList.add("bo_w_select");
-                    visual_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
+            create_schedule_row("오전 (1)",emptyCnt,year,month,tbCalendar);
+            create_schedule_row("오전 (2)",emptyCnt,year,month,tbCalendar);
+            create_schedule_row("오후 (1)",emptyCnt,year,month,tbCalendar);
+            create_schedule_row("오후 (2)",emptyCnt,year,month,tbCalendar);
 
-                    cell.appendChild(select);
-                } else {
-                    tempEmptyCnt--;
-                }
-
-            }
-
-            // 인지활동(2) 영역 생성
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "인지활동 (2)";
-            cell.classList.add('calendar__index');
-            tempEmptyCnt = emptyCnt;
-
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 7) {
-                    const select = document.createElement('select');
-                    let day = i - 7 + j;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-                    select.classList.add(temp_date);
-                    select.classList.add("learning2");
-                    select.classList.add("bo_w_select");
-
-                    thinking_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
-
-                    cell.appendChild(select);
-                } else {
-                    tempEmptyCnt--;
-                }
-
-            }
-
-            // 일상 생활 활동 영역 생성
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "일상 생활 활동";
-            cell.classList.add('calendar__index');
-            tempEmptyCnt = emptyCnt;
-
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 7) {
-                    const select = document.createElement('select');
-                    let day = i - 7 + j;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-                    select.classList.add(temp_date);
-                    select.classList.add("learning3");
-                    select.classList.add("bo_w_select");
-
-                    life_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
-
-                    cell.appendChild(select);
-                } else {
-                    tempEmptyCnt--;
-                }
-
-            }
             row = calendar.insertRow();
             cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
             cell.innerHTML = "학습일";
@@ -491,80 +404,59 @@ function buildCalendar() {//현재 달 달력 만들기
             cnt = cnt + 1;//열의 갯수를 계속 다음으로 위치하게 해주는 역할
             lastEmptyCnt++;
         } else {
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "인지활동 (1)";
-            cell.classList.add('calendar__index');
-            tempEmptyCnt = 7 - lastEmptyCnt;
-
             let year = today.getFullYear().toString();
             let month = (today.getMonth() + 1).toString();
             if (today.getMonth() + 1 < 10)
                 month = "0" + month;
 
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt > 0) {
-                    const select = document.createElement('select');
+            create_last_row("오전 (1)",lastEmptyCnt,year,month);
+            create_last_row("오전 (2)",lastEmptyCnt,year,month);
+            create_last_row("오후 (1)",lastEmptyCnt,year,month);
+            create_last_row("오후 (2)",lastEmptyCnt,year,month);
 
-                    let day = i + j - (7 - lastEmptyCnt) - 1;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-
-                    select.classList.add(temp_date);
-                    select.classList.add("learning1");
-                    select.classList.add("bo_w_select");
-
-                    visual_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
-
-                    cell.appendChild(select);
-                    tempEmptyCnt--;
-                }
-            }
-            row = calendar.insertRow();
-            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-            cell.innerHTML = "인지활동 (2)";
-            cell.classList.add('calendar__index');
-            tempEmptyCnt = 7 - lastEmptyCnt;
-
-            for (j = 1; j <= 7; j++) {
-                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
-                if (tempEmptyCnt > 0) {
-                    const select = document.createElement('select');
-
-                    let day = i + j - (7 - lastEmptyCnt) - 1;
-                    if (day < 10)
-                        day = "0" + day;
-                    const temp_date = year + "-" + month + "-" + day;
-
-                    select.classList.add(temp_date);
-                    select.classList.add("learning2");
-                    select.classList.add("bo_w_select");
-
-                    thinking_problems.forEach(element => {
-                        const option = document.createElement("option");
-                        option.value = 17;
-                        option.text = element;
-                        select.appendChild(option);
-                    });
-
-                    cell.appendChild(select);
-                    tempEmptyCnt--;
-                }
-            }
-            create_schedule_row("오후 (1)",lastEmptyCnt);
             break;
         }
     }
 }
 
-function create_schedule_row(learning_time,lastEmptyCnt,year,month,day) {
+function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
+    
+            // 일상 생활 활동 영역 생성
+            row = calendar.insertRow();
+            cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+            cell.innerHTML = learning_time;
+            cell.classList.add('calendar__index');
+            let tempEmptyCnt = emptyCnt;
+            console.log(learning_list);
+
+            for (j = 1; j <= 7; j++) {
+                cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
+                if (tempEmptyCnt == 0 || tbCalendar.rows.length >= 7) {
+                    const select = document.createElement('select');
+                    let day = i - 7 + j;
+                    if (day < 10)
+                        day = "0" + day;
+                    const temp_date = year + "-" + month + "-" + day;
+                    select.classList.add(temp_date);
+                    select.classList.add("learning3");
+                    select.classList.add("bo_w_select");
+
+                    learning_list.forEach(element => {
+                        const option = document.createElement("option");
+                        option.value = 17;
+                        option.text = element.name;
+                        select.appendChild(option);
+                    });
+
+                    cell.appendChild(select);
+                } else {
+                    tempEmptyCnt--;
+                }
+
+            }
+}
+
+function create_last_row(learning_time,lastEmptyCnt,year,month) {
     row = calendar.insertRow();
     cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
     cell.innerHTML = learning_time;
@@ -585,10 +477,10 @@ function create_schedule_row(learning_time,lastEmptyCnt,year,month,day) {
             select.classList.add("learning3");
             select.classList.add("bo_w_select");
 
-            life_problems.forEach(element => {
+            learning_list.forEach(element => {
                 const option = document.createElement("option");
                 option.value = 17;
-                option.text = element;
+                option.text =element.name;
                 select.appendChild(option);
             });
 
