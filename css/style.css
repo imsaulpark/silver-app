@@ -439,3 +439,31 @@ p {
   min-width: 1300px;
   min-height: 100%;
 }
+
+.brief_description {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border-color: transparent;
+  background-color: transparent;
+  font-size: medium;
+}
+
+.brief_description_cell {
+  padding: 0;
+  height: 100%;
+}
+
+.long_description {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  border-color: transparent;
+  background-color: transparent;
+  font-size: large;
+}
+
+.long_description_cell {
+  padding: 0;
+  height: 100%;
+}

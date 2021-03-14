@@ -58,18 +58,59 @@ function make_problem_table(problem_list) {
     problem_list.forEach(problem => {
         const row = problem_table.insertRow();
         let cell = row.insertCell();
-        cell.innerHTML = problem.name;
+        cell.classList.add('brief_description_cell');
+        let input = document.createElement('input');
+        input.type = 'text';
+        input.value = problem.name;
+        input.classList.add('brief_description');
+        cell.appendChild(input);
+
         cell = row.insertCell();
-        cell.innerHTML = problem.description;
+        cell.classList.add('brief_description_cell');
+        input = document.createElement('input');
+        input.type = 'text';
+        input.value = "간단한 설명을 입력하세요";
+        input.classList.add('brief_description');
+        cell.appendChild(input);
+
         cell = row.insertCell();
-        cell.innerHTML = problem.description;
+        cell.classList.add('long_description_cell');
+        let textarea = document.createElement('textarea');
+        textarea.value = "자세한 설명을 입력하세요";
+        textarea.classList.add('long_description');
+        cell.appendChild(textarea);
+
+
         cell = row.insertCell();
-        cell.innerHTML = problem.url;
+        cell.classList.add('brief_description_cell');
+        input = document.createElement('input');
+        input.type = 'text';
+        input.value = "유튜브 링크를 입력하세요";
+        input.classList.add('brief_description');
+        cell.appendChild(input);
+
+
+
         cell = row.insertCell();
-        //파일 넣기
+        cell.classList.add('brief_description_cell');
+        input = document.createElement('input');
+        input.type = 'file';
+        input.accept='*';
+        input.classList.add('brief_description');
+        cell.appendChild(input);
+
+
         cell = row.insertCell();
-        const btn = document.createElement("button");
-        const text = document.createTextNode("삭제");
+        let btn = document.createElement("button");
+        let text = document.createTextNode("변경");
+        btn.appendChild(text);
+        btn.classList.add('drop-btn');
+        cell.appendChild(btn);
+        cell.classList.add('transparent-border');
+
+        cell = row.insertCell();
+        btn = document.createElement("button");
+        text = document.createTextNode("삭제");
         btn.appendChild(text);
         btn.classList.add('drop-btn');
         cell.appendChild(btn);
