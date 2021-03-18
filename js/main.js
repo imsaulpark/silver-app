@@ -64,9 +64,25 @@ function make_member_table(member_list) {
         cell = row.insertCell();
         //등급 넣기
     });
-
-
 }
+let temp = {"name":"시지각", "description":}
+$.ajax({
+    type: 'POST',
+    url: 'http://13.209.38.201:8080/learnings/new',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json'
+}).done(function (r) {
+    if (r.status == "OK") {
+        is_schedule_exsist = true;
+        alert('러닝 스케줄 통신 성공');
+    } else {
+        alert('러닝 스케줄 통신 실패');
+    }
+}).fail(function (r) {
+    alert('러닝 스케줄 서버 오류');
+});
+
 function get_all_learning_list() {
     $.ajax({
         type: 'GET',
@@ -75,7 +91,7 @@ function get_all_learning_list() {
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            //console.log(r.data);
+            console.log(r.data);
             set_learning_category(r.data);
             // console.log(r.data);
             // alert('통신 성공');
