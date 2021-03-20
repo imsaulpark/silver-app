@@ -2,11 +2,10 @@
 let learning_list = new Array();
 var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
 var date = new Date();//today의 Date를 세어주는 역할
-let is_schedule_exsist = false;
 
 get_all_learning_list();
 get_member_list();  //대상자 목록 받아오기
-get_learning_schedule();
+// get_learning_schedule();
 
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
@@ -21,8 +20,26 @@ let category6 = new Array();
 let category7 = new Array();
 let category8 = new Array();
 
+// let data = { "name": "-", "briefDescription":"", "fullDescription":"", "url": "", "categoryId": 0 };
+// console.log(data);
+// $.ajax({
+//     type: 'POST ',
+//     url: 'http://13.209.38.201:8080/learnings/new',
+//     data: data,
+//     contentType: 'application/json; charset=utf-8',
+//     dataType: 'json'
+// }).done(function (r) {
+//     if (r.status == "OK") {
+//         // console.log(r.data);
+//         alert('등록 성공');
+//     } else {
+//         alert('통신 실패');
+//     }
+// }).fail(function (r) {
+//     alert('서  버 오류');
+// });
 
-let member_list;
+var member_list = new Array();
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
 function get_member_list() {
@@ -48,6 +65,15 @@ function get_member_list() {
 
 };
 
+function selectAll(selectAll)  {
+    const checkboxes 
+         = document.getElementsByName('member');
+    
+    checkboxes.forEach((checkbox) => {
+      checkbox.checked = selectAll.checked;
+    })
+  }
+
 function make_member_table(member_list) {
     const member_table = document.querySelector('.person-table');
     let count = 1;
@@ -55,33 +81,18 @@ function make_member_table(member_list) {
         const row = member_table.insertRow();
         let cell = row.insertCell();
         cell.innerHTML = count++;
+
         cell = row.insertCell();
-        //체크박스 넣기
+        cell.innerHTML += " <input type='checkbox' onchange='get_learning_schedule(this, "+member.id+")' name='member' id="+member.id+" />";
         cell = row.insertCell();
         cell.innerHTML = member.name;
         cell = row.insertCell();
-        //담당자명 넣기
+        cell.innerHTML = member.managerName;
         cell = row.insertCell();
-        //등급 넣기
+        cell.innerHTML = member.grade;
     });
 }
-let temp = {"name":"시지각", "description":}
-$.ajax({
-    type: 'POST',
-    url: 'http://13.209.38.201:8080/learnings/new',
-    data: JSON.stringify(data),
-    contentType: 'application/json; charset=utf-8',
-    dataType: 'json'
-}).done(function (r) {
-    if (r.status == "OK") {
-        is_schedule_exsist = true;
-        alert('러닝 스케줄 통신 성공');
-    } else {
-        alert('러닝 스케줄 통신 실패');
-    }
-}).fail(function (r) {
-    alert('러닝 스케줄 서버 오류');
-});
+
 
 function get_all_learning_list() {
     $.ajax({
@@ -91,7 +102,7 @@ function get_all_learning_list() {
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            console.log(r.data);
+            //console.log(r.data);
             set_learning_category(r.data);
             // console.log(r.data);
             // alert('통신 성공');
@@ -102,14 +113,16 @@ function get_all_learning_list() {
         // alert('서버 오류');
     });
 }
+
 function set_learning_category(data) {
 
-    category4.push({ "id": 0, "name": '-' });
-    category5.push({ "id": 0, "name": '-' });
-    category6.push({ "id": 0, "name": '-' });
-    category7.push({ "id": 0, "name": '-' });
-    category8.push({ "id": 0, "name": '-' });
-    
+    // category4.push({ "id": 0, "name": '-' });
+    // category5.push({ "id": 0, "name": '-' });
+    // category6.push({ "id": 0, "name": '-' });
+    // category7.push({ "id": 0, "name": '-' });
+    // category8.push({ "id": 0, "name": '-' });
+    learning_list.push({ "id": 0, "name": '-' });
+    console.log(data);
     data.forEach(learning => {
         learning_list.push({ "id": learning.id, "name": learning.name });   
         switch (learning.categoryId) {
@@ -132,9 +145,9 @@ function set_learning_category(data) {
                 break;
         }
     });
-    console.log(learning_list);
+    //console.log(learning_list);
     //defualt 러닝 설정
-    make_problem_table(category4);
+    make_problem_table(learning_list);
     buildCalendar();
     //console.log(category4);
 
@@ -148,7 +161,10 @@ var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
 var lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
 
 // 센터 러닝 스케줄 받아오기
-function get_learning_schedule() {
+function get_learning_schedule(obj, memberId) {
+
+    if(obj.checked == false)
+        return;
 
     let lastDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
     let year = lastDate.getFullYear().toString();
@@ -158,7 +174,7 @@ function get_learning_schedule() {
     let day = lastDate.getDate().toString();
 
     let data = {
-        "centerId": 3,
+        "memberId": memberId,
         "start": year + "-" + month + "-01",
         "end": year + "-" + month + "-" + day
     };
@@ -166,40 +182,46 @@ function get_learning_schedule() {
 
     $.ajax({
         type: 'GET',
-        url: 'http://13.209.38.201:8080/learning-schedules',
+        url: 'http://13.209.38.201:8080/member-learnings',
         data: data,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            //console.log(r.data);
+            console.log(r.data);
 
-            if (r.data.length == 0) {
-                is_schedule_exsist = false;
-            } else {
-                is_schedule_exsist = true;
-                set_learning_schedule(r.data);
-            }
+            set_learning_schedule(r.data,year,month,day);
 
             // alert('센터 러닝 스케줄 통신 성공');
         } else {
             alert('센터 러닝 스케줄 통신 실패');
         }
     }).fail(function (r) {
+        console.log(r);
         alert('센터 러닝 스케줄 서버 오류');
     });
 
 };
 
-
 //센터 러닝 스케줄 적용하기
-function set_learning_schedule(learning_schedule) {
-    learning_schedule.forEach(daily_schedule => {
-        const select_box = document.getElementsByClassName(daily_schedule.date);
-        select_box[0].value = daily_schedule.learningIds[0];
-        select_box[1].value = daily_schedule.learningIds[1];
-        select_box[2].value = daily_schedule.learningIds[2];
-    })
+function set_learning_schedule(learning_schedule,year,month,day) {
+    console.log(learning_schedule);
+    for(let i=1; i<=day; i++){
+        let temp_day = i;
+        if(i<10)
+            temp_day = "0" + temp_day;
+        let temp_date = year + "-" + month + "-" + temp_day;
+
+        const select_box = document.getElementsByClassName(temp_date);
+        // console.log("% : "+learning_schedule[temp_date].learningIds);
+        if(learning_schedule[temp_date]!=undefined){
+            let learningIds = learning_schedule[temp_date].learningIds;
+            select_box[0].value = learningIds[0];
+            select_box[1].value = learningIds[1];
+            select_box[2].value = learningIds[2];
+            select_box[3].value = learningIds[3];
+        }
+    }
 }
 
 // when the schedul_update button is clicked, collect schedule data and post
@@ -212,42 +234,54 @@ schedule_update.addEventListener('click', (event) => {
     if (lastDate.getMonth() + 1 < 10)
         month = "0" + month;
     let endDay = lastDate.getDate().toString();
+    let memberIds = new Array();
     let learning_schedule = new Array();
+
+    const checkboxes = document.getElementsByName('member');
+    
+    checkboxes.forEach((checkbox) => {
+        if(checkbox.checked == true){
+            memberIds.push(parseInt(checkbox.id));
+        }
+    })
+
+
     for (let i = 1; i <= endDay; i++) {
         let day = i;
         if (i < 10)
             day = "0" + day;
         let string_date = year + "-" + month + "-" + day;
         const select_box = document.getElementsByClassName(string_date);
-        learning_schedule.push({ "date": string_date, "learningIds": [select_box[0].value, select_box[1].value, select_box[2].value] });
+        learning_schedule.push({ "date": string_date, "learningIds": [parseInt(select_box[0].value), parseInt(select_box[1].value), parseInt(select_box[2].value),  parseInt(select_box[3].value)] });
     }
 
-    let body = { "centerId": 3, "data": learning_schedule };
-    //console.log(body);
-    if (is_schedule_exsist)
-        put_learning_schedule(body);
-    else
-        post_learning_schedule(body);
+    let body = { "memberIds": memberIds, "start":year+"-"+month+"-01", "end":year+"-"+month+"-"+endDay, "data": learning_schedule };
+    console.log(body);
+
+    post_learning_schedule(body);
 });
+
+
 
 // post learning_schedule
 function post_learning_schedule(data) {
 
     $.ajax({
         type: 'POST',
-        url: 'http://13.209.38.201:8080/learning-schedules/new',
+        url: 'http://13.209.38.201:8080/member-learnings/new',
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
-        if (r.status == "OK") {
-            is_schedule_exsist = true;
-            alert('러닝 스케줄 통신 성공');
+        if (r.status == "CREATED") {
+            
+            alert('post_learning_schedule success');
         } else {
-            alert('러닝 스케줄 통신 실패');
+            console.log(r.status);
+            alert('post_learning_schedule failed');
         }
     }).fail(function (r) {
-        alert('러닝 스케줄 서버 오류');
+        alert('post_learning_schedule server error');
     });
 }
 
@@ -282,7 +316,7 @@ person_add.addEventListener('click', (event) => {
     $.ajax({
         type: 'GET',
         url: 'http://13.209.38.201:8080/center-learnings',
-        data: JSON.stringify(data),
+        data: data,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
@@ -303,7 +337,7 @@ function prevCalendar() {//이전 달
     //getMonth()는 현재 달을 받아 오므로 이전달을 출력하려면 -1을 해줘야함
     today = new Date(today.getFullYear(), today.getMonth() - 1, today.getDate());
     buildCalendar(); //달력 cell 만들어 출력 
-    get_learning_schedule();
+
 }
 
 function nextCalendar() {//다음 달
@@ -312,7 +346,7 @@ function nextCalendar() {//다음 달
     //getMonth()는 현재 달을 받아 오므로 다음달을 출력하려면 +1을 해줘야함
     today = new Date(today.getFullYear(), today.getMonth() + 1, today.getDate());
     buildCalendar();//달력 cell 만들어 출력
-    get_learning_schedule();
+
 }
 function buildCalendar() {//현재 달 달력 만들기
     var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -441,7 +475,7 @@ function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
             cell.innerHTML = learning_time;
             cell.classList.add('calendar__index');
             let tempEmptyCnt = emptyCnt;
-            console.log(learning_list);
+            //console.log(learning_list);
 
             for (j = 1; j <= 7; j++) {
                 cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
@@ -457,7 +491,7 @@ function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
 
                     learning_list.forEach(element => {
                         const option = document.createElement("option");
-                        option.value = 17;
+                        option.value = element.id;
                         option.text = element.name;
                         select.appendChild(option);
                     });
@@ -493,7 +527,7 @@ function create_last_row(learning_time,lastEmptyCnt,year,month) {
 
             learning_list.forEach(element => {
                 const option = document.createElement("option");
-                option.value = 17;
+                option.value = element.id;
                 option.text =element.name;
                 select.appendChild(option);
             });

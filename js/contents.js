@@ -63,6 +63,7 @@ function make_problem_table(problem_list) {
         input.type = 'text';
         input.value = problem.name;
         input.classList.add('brief_description');
+        input.classList.add("selector"+problem.id);
         cell.appendChild(input);
 
         cell = row.insertCell();
@@ -71,6 +72,7 @@ function make_problem_table(problem_list) {
         input.type = 'text';
         input.value = "간단한 설명을 입력하세요";
         input.classList.add('brief_description');
+        input.classList.add("selector"+problem.id);
         cell.appendChild(input);
 
         cell = row.insertCell();
@@ -78,6 +80,7 @@ function make_problem_table(problem_list) {
         let textarea = document.createElement('textarea');
         textarea.value = "자세한 설명을 입력하세요";
         textarea.classList.add('long_description');
+        textarea.classList.add("selector"+problem.id);
         cell.appendChild(textarea);
 
 
@@ -87,6 +90,7 @@ function make_problem_table(problem_list) {
         input.type = 'text';
         input.value = "유튜브 링크를 입력하세요";
         input.classList.add('brief_description');
+        input.classList.add("selector"+problem.id);
         cell.appendChild(input);
 
 
@@ -97,25 +101,85 @@ function make_problem_table(problem_list) {
         input.type = 'file';
         input.accept='*';
         input.classList.add('brief_description');
+        input.classList.add("selector"+problem.id);
         cell.appendChild(input);
 
 
         cell = row.insertCell();
-        let btn = document.createElement("button");
-        let text = document.createTextNode("변경");
-        btn.appendChild(text);
-        btn.classList.add('drop-btn');
-        cell.appendChild(btn);
+        cell.innerHTML += " <button onclick='edit("+problem.id+", "+problem.categoryId+")' class='drop-btn' />";
+        text = document.createTextNode("삭제");
+        cell.children[0].appendChild(text);
         cell.classList.add('transparent-border');
 
         cell = row.insertCell();
-        btn = document.createElement("button");
+        cell.innerHTML += " <button onclick='edit("+problem.id+", "+problem.categoryId+")' class='drop-btn' />";
         text = document.createTextNode("삭제");
-        btn.appendChild(text);
-        btn.classList.add('drop-btn');
-        cell.appendChild(btn);
+        cell.children[0].appendChild(text);
         cell.classList.add('transparent-border');
     });
-
-
 }
+
+function edit(problem_id, category_id){
+    let objects = document.querySelectorAll(".selector"+problem_id);
+    console.log(objects[2].value);
+
+    let data = {
+        "name": objects[0].value,
+        "briefDescription": objects[1].value,
+        "fullDescription": objects[2].value,
+        "url": objects[3].value,
+        "categoryId": category_id
+    };
+    
+    console.log(data);
+    
+    $.ajax({
+        type: 'PUT',
+        url: 'http://13.209.38.201:8080/learnings/'+problem_id,
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+    
+            // alert('센터 러닝 스케줄 통신 성공');
+        } else {
+            alert('센터 러닝 스케줄 통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        alert('센터 러닝 스케줄 서버 오류');
+    });
+}
+
+/* 
+let data = {
+    "name": "-",
+    "briefDescription": "brief",
+    "fullDescription": "full",
+    "url": "url",
+    "categoryId": 7
+};
+
+
+$.ajax({
+    type: 'PUT',
+    url: 'http://13.209.38.201:8080/learnings/10',
+    data: JSON.stringify(data),
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json'
+}).done(function (r) {
+    if (r.status == "OK") {
+        console.log(r.data);
+
+        // alert('센터 러닝 스케줄 통신 성공');
+    } else {
+        alert('센터 러닝 스케줄 통신 실패');
+    }
+}).fail(function (r) {
+    console.log(r);
+    alert('센터 러닝 스케줄 서버 오류');
+});
+
+*/

@@ -52,3 +52,31 @@ function make_member_table(member_list) {
 
 
 }
+
+
+let data = {
+    "name": "이름",
+    "briefDescription": "brief",
+    "fulldescription": "full",
+    "url": "123",
+    "categoryId": 0
+};
+
+
+$.ajax({
+    type: 'PUT',
+    url: 'http://13.209.38.201:8080/learnings/10',
+    data: data,
+    contentType: 'application/json; charset=utf-8',
+    dataType: 'json'
+}).done(function (r) {
+    if (r.status == "OK") {
+        console.log(r.data);
+
+        // alert('센터 러닝 스케줄 통신 성공');
+    } else {
+        alert('센터 러닝 스케줄 통신 실패');
+    }
+}).fail(function (r) {
+    alert('센터 러닝 스케줄 서버 오류');
+});

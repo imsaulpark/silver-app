@@ -4,13 +4,17 @@ const button = document.querySelector('.login-btn');
 button.addEventListener('click', (event) => {
 
     let data = {
-        "id":email.value,
-        "password": SHA256(password.value)
+        // "id":email.value,
+        "emailId":"saulpark@gmail.com",
+        //"password": SHA256(password.value)
+        "password": "a123456#!"
+        
     }
-   
+    console.log(data);
+
     $.ajax({
         type: 'POST',
-        url: 'http://13.209.38.201:8080/',
+        url: 'http://13.209.38.201:8080/users/login',
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
