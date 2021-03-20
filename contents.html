@@ -115,15 +115,23 @@
 
             <!-- Person List -->
             <section id="problem-list">
-                <h2>문제 정보</h2>
-
-                <table border="1" class="problem-table">
-                    <th class="person-table__header person-table__header__id">문제 이름</th>
-                    <th class="person-table__header person-table__header__name">간단 설명</th>
-                    <th class="person-table__header person-table__header__email">자세한 설명</th>
-                    <th class="person-table__header person-table__header__phone">유튜브 링크</th>
-                    <th class="person-table__header person-table__header__approval">교보재 파일</th>
-                </table>
+                <div class="problem-list__top">
+                    <div class="problem-list__top__left">
+                        <h2 class="learning-problem">문제 정보</h2>
+                    </div>
+                    <div class="problem-list__top__right">
+                        <button class="create-btn" onclick="create_learning()">러닝 추가</button>
+                    </div>
+                </div>
+                <div class="problem-list__bottom">
+                    <table border="1" class="problem-table">
+                        <th class="person-table__header person-table__header__id">문제 이름</th>
+                        <th class="person-table__header person-table__header__name">간단 설명</th>
+                        <th class="person-table__header person-table__header__email">자세한 설명</th>
+                        <th class="person-table__header person-table__header__phone">유튜브 링크</th>
+                        <th class="person-table__header person-table__header__approval">교보재 파일</th>
+                    </table>
+                </div>
             </section> 
         </div>
 </body>

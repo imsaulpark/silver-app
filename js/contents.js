@@ -19,6 +19,8 @@ $.ajax({
 });
 */
 
+let category_id = 0;
+
 // problem category button clicked
 let category_btn = new Array();
 for(let i=1; i<=8; i++){
@@ -30,6 +32,7 @@ for(let i=1; i<=8; i++){
 
 //러닝 목록 받아오기
 function get_learning_list(categoryId) {
+    category_id = categoryId;
     let data = { "categoryId": categoryId };
     $.ajax({
         type: 'GET',
@@ -56,67 +59,71 @@ function make_problem_table(problem_list) {
         problem_table.deleteRow(1);
     let count = 1;
     problem_list.forEach(problem => {
-        const row = problem_table.insertRow();
-        let cell = row.insertCell();
-        cell.classList.add('brief_description_cell');
-        let input = document.createElement('input');
-        input.type = 'text';
-        input.value = problem.name;
-        input.classList.add('brief_description');
-        input.classList.add("selector"+problem.id);
-        cell.appendChild(input);
-
-        cell = row.insertCell();
-        cell.classList.add('brief_description_cell');
-        input = document.createElement('input');
-        input.type = 'text';
-        input.value = "간단한 설명을 입력하세요";
-        input.classList.add('brief_description');
-        input.classList.add("selector"+problem.id);
-        cell.appendChild(input);
-
-        cell = row.insertCell();
-        cell.classList.add('long_description_cell');
-        let textarea = document.createElement('textarea');
-        textarea.value = "자세한 설명을 입력하세요";
-        textarea.classList.add('long_description');
-        textarea.classList.add("selector"+problem.id);
-        cell.appendChild(textarea);
-
-
-        cell = row.insertCell();
-        cell.classList.add('brief_description_cell');
-        input = document.createElement('input');
-        input.type = 'text';
-        input.value = "유튜브 링크를 입력하세요";
-        input.classList.add('brief_description');
-        input.classList.add("selector"+problem.id);
-        cell.appendChild(input);
-
-
-
-        cell = row.insertCell();
-        cell.classList.add('brief_description_cell');
-        input = document.createElement('input');
-        input.type = 'file';
-        input.accept='*';
-        input.classList.add('brief_description');
-        input.classList.add("selector"+problem.id);
-        cell.appendChild(input);
-
-
-        cell = row.insertCell();
-        cell.innerHTML += " <button onclick='edit("+problem.id+", "+problem.categoryId+")' class='drop-btn' />";
-        text = document.createTextNode("삭제");
-        cell.children[0].appendChild(text);
-        cell.classList.add('transparent-border');
-
-        cell = row.insertCell();
-        cell.innerHTML += " <button onclick='edit("+problem.id+", "+problem.categoryId+")' class='drop-btn' />";
-        text = document.createTextNode("삭제");
-        cell.children[0].appendChild(text);
-        cell.classList.add('transparent-border');
+        make_table_row(problem, problem_table);
     });
+}
+
+function make_table_row(problem, problem_table){
+    const row = problem_table.insertRow();
+    let cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    let input = document.createElement('input');
+    input.type = 'text';
+    input.value = problem.name;
+    input.classList.add('brief_description');
+    input.classList.add("selector"+problem.id);
+    cell.appendChild(input);
+
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.value = problem.briefDescription;
+    input.classList.add('brief_description');
+    input.classList.add("selector"+problem.id);
+    cell.appendChild(input);
+
+    cell = row.insertCell();
+    cell.classList.add('long_description_cell');
+    let textarea = document.createElement('textarea');
+    textarea.value = problem.fullDescription;
+    textarea.classList.add('long_description');
+    textarea.classList.add("selector"+problem.id);
+    cell.appendChild(textarea);
+
+
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.value = problem.url;
+    input.classList.add('brief_description');
+    input.classList.add("selector"+problem.id);
+    cell.appendChild(input);
+
+
+
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'file';
+    input.accept='*';
+    input.classList.add('brief_description');
+    input.classList.add("selector"+problem.id);
+    cell.appendChild(input);
+
+
+    cell = row.insertCell();
+    cell.innerHTML += " <button onclick='edit("+problem.id+", "+problem.categoryId+")' class='edit-btn' />";
+    text = document.createTextNode("변경");
+    cell.children[0].appendChild(text);
+    cell.classList.add('transparent-border');
+
+    cell = row.insertCell();
+    cell.innerHTML += " <button onclick='remove("+problem.id+")' class='drop-btn' />";
+    text = document.createTextNode("삭제");
+    cell.children[0].appendChild(text);
+    cell.classList.add('transparent-border');
 }
 
 function edit(problem_id, category_id){
@@ -142,8 +149,7 @@ function edit(problem_id, category_id){
     }).done(function (r) {
         if (r.status == "OK") {
             console.log(r.data);
-    
-            // alert('센터 러닝 스케줄 통신 성공');
+            alert('변경되었습니다.');
         } else {
             alert('센터 러닝 스케줄 통신 실패');
         }
@@ -153,26 +159,69 @@ function edit(problem_id, category_id){
     });
 }
 
-/* 
-let data = {
-    "name": "-",
-    "briefDescription": "brief",
-    "fullDescription": "full",
-    "url": "url",
-    "categoryId": 7
-};
+function remove(problem_id){
+
+    $.ajax({
+        type: 'DELETE',
+        url: 'http://13.209.38.201:8080/learnings/'+problem_id,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+    
+            alert('삭제되었습니다.');
+            get_learning_list(category_id);
+        } else {
+            alert('센터 러닝 스케줄 통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        alert('센터 러닝 스케줄 서버 오류');
+    });
+}
+
+function create_learning(){
+
+    let data = {
+        "name": "예시 문제 이름",
+        "briefDescription": "간단한 설명",
+        "fullDescription": "자세한 설명",
+        "url": "유튜브 링크",
+        "categoryId": category_id
+    };
+
+
+    $.ajax({
+        type: 'POST',
+        url: 'http://13.209.38.201:8080/learnings/new',
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "CREATED") {
+            console.log(r.data);
+            get_learning_list(category_id);
+            // alert('센터 러닝 스케줄 통신 성공');
+        } else {
+            alert('센터 러닝 스케줄 통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        alert('센터 러닝 스케줄 서버 오류');
+    });
+
+}
 
 
 $.ajax({
-    type: 'PUT',
-    url: 'http://13.209.38.201:8080/learnings/10',
-    data: JSON.stringify(data),
+    type: 'GET',
+    url: 'http://13.209.38.201:8080//learning-categories/children=6&parentId=5',
     contentType: 'application/json; charset=utf-8',
     dataType: 'json'
 }).done(function (r) {
     if (r.status == "OK") {
         console.log(r.data);
-
         // alert('센터 러닝 스케줄 통신 성공');
     } else {
         alert('센터 러닝 스케줄 통신 실패');
@@ -181,5 +230,3 @@ $.ajax({
     console.log(r);
     alert('센터 러닝 스케줄 서버 오류');
 });
-
-*/

@@ -121,7 +121,6 @@ function set_learning_category(data) {
     // category6.push({ "id": 0, "name": '-' });
     // category7.push({ "id": 0, "name": '-' });
     // category8.push({ "id": 0, "name": '-' });
-    learning_list.push({ "id": 0, "name": '-' });
     console.log(data);
     data.forEach(learning => {
         learning_list.push({ "id": learning.id, "name": learning.name });   
