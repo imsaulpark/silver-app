@@ -310,7 +310,7 @@ function put_learning_schedule(data) {
 const person_add = document.querySelector('.person-control__add');
 person_add.addEventListener('click', (event) => {
 
-    let data = "fucking good";
+    let data = "good";
 
     $.ajax({
         type: 'GET',

@@ -60,37 +60,49 @@
                 </div>
             </section>
 
-            <!-- 대상자 검색 -->
-            <section id="person-search">
-                <h2>대상자 검색</h2>
-                <div class="person-search__box">
-                    <div class="search-content">
-                        <select name="search-filter" class="search-content__filter">
-                            <option value="none">=== 선택 ===</option>
-                            <option value="id">아이디</option>
-                            <option value="name">이름</option>
-                            <option value="email">이메일</option>
-                            <option value="phone">핸드폰</option>
-                            <option value="approval">승인여부</option>
-                        </select>
-                        <input type="text" class="search-content__text">
-                    </div>
-                    <button class="person-search__box__button">검색</button>
-                </div>
-
-            </section>
-
-
             <!-- Person List -->
             <section id="person-list2">
+
+                <div class="person-search">
+                    <h2>대상자 검색</h2>
+                    <div class="person-search__box">
+                        <div class="search-content">
+                            <select name="search-filter" class="search-content__filter">
+                                <option value="none">=== 선택 ===</option>
+                                <option value="type">타입</option>
+                                <option value="id">아이디</option>
+                                <option value="name">이름</option>
+                                <option value="sex">성별</option>
+                                <option value="city">시/군/구</option>
+                                <option value="street">동/읍/면</option>
+                                <option value="zipcode">zipcode</option>
+                                <option value="email">이메일</option>
+                                <option value="phone">핸드폰</option>
+                                <option value="managerName">담당자명</option>
+                                <option value="grade">등급</option>
+                                <option value="approval">승인여부</option>
+                            </select>
+                            <input type="text" class="search-content__text">
+                        </div>
+                        <button onclick="search()" class="person-search__box__button">검색</button>
+                    </div>
+                </div>
+                <br><br>
                 <h2>대상자 목록</h2>
 
                 <table border="1" class="person-table">
                     <th class="person-table__header person-table__header__number">번호</th>
+                    <th class="person-table__header person-table__header__type">타입</th>
                     <th class="person-table__header person-table__header__id">아이디</th>
                     <th class="person-table__header person-table__header__name">이름</th>
+                    <th class="person-table__header person-table__header__sex">성별</th>
+                    <th class="person-table__header person-table__header__city">시/군/구</th>
+                    <th class="person-table__header person-table__header__street">동/읍/면</th>
+                    <th class="person-table__header person-table__header__zipcode">우편번호</th>
                     <th class="person-table__header person-table__header__email">이메일</th>
                     <th class="person-table__header person-table__header__phone">핸드폰</th>
+                    <th class="person-table__header person-table__header__manager">담당자명</th>
+                    <th class="person-table__header person-table__header__grade">등급</th>
                     <th class="person-table__header person-table__header__approval">승인</th>
                 </table>
             </section>
