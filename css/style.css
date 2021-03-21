@@ -497,3 +497,27 @@ p {
   /* align-items: center; */
   margin-bottom: 10px;
 }
+
+/* payment */
+
+.payment-btn {
+  background-color: var(--color-light-grey);
+  width: 150px;
+  height: 150px;
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: 20px;
+  margin: 10px;
+}
+
+.payment-p {
+  color: var(--color-white);
+}
+
+#payment {
+  margin: 10px;
+}
+
+.selected-date {
+  font-size: 22px;
+}
