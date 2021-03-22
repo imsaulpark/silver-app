@@ -3,11 +3,11 @@
 let category_id = 0;
 
 // problem category button clicked
-let category_btn = new Array();
-for(let i=1; i<=8; i++){
-    category_btn[i] = document.querySelector('.category'+i+'__btn');
-    category_btn[i].addEventListener('click', (event) => {
-        get_learning_list(i);
+let categories_btn = new Array();
+for(let i=0; i<8; i++){
+    categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
+    categories_btn[i].addEventListener('click', (event) => {
+        get_learning_list(i+6);
     });
 }
 

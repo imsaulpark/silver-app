@@ -1,10 +1,12 @@
+let managerMap = new Map()
+
 get_member_list();
 
 function get_member_list(filter, value) {
-    let data = { "centerId": 3 };
+    let data = { "centerId": 1 };
     $.ajax({
         type: 'GET',
-        url: 'http://13.209.38.201:8080/members/patients',
+        url: 'http://13.209.38.201:8080/members/employees',
         data: data,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
@@ -20,7 +22,6 @@ function get_member_list(filter, value) {
     }).fail(function (r) {
         // alert('서버 오류');
     });
-
 };
 
 function search(){
@@ -46,6 +47,13 @@ function make_member_table(member_list,filter, value) {
     console.log(tag);
     member_list.forEach(member => {
 
+
+        // manager의 이름과 ID를 매칭시키기 위한 맵 만들어 놓기
+        if(member.type == "M"){
+            managerMap.set(member.managerName, member.managerId);
+        }
+
+        // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && member[filter] == value ))
         {
             const row = member_table.insertRow();
@@ -68,14 +76,14 @@ function make_member_table(member_list,filter, value) {
 
             // 성별
             cell = row.insertCell();
-            //cell.innerHTML = member.type;
+            cell.innerHTML = member.sex;
 
             // city
             cell = row.insertCell();
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            // input.value = member.name;   
+            input.value = member.address.city;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
@@ -85,7 +93,7 @@ function make_member_table(member_list,filter, value) {
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            // input.value = member.name;   
+            input.value = member.address.street;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
@@ -95,7 +103,17 @@ function make_member_table(member_list,filter, value) {
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            // input.value = member.name;   
+            input.value = member.address.zipcode;
+            input.classList.add('brief_description');
+            input.classList.add("selector"+member.id);
+            cell.appendChild(input);
+
+            // rrn
+            cell = row.insertCell();
+            cell.classList.add('brief_description_cell');
+            input = document.createElement('input');
+            input.type = 'text';
+            input.value = member.rrn;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
@@ -105,7 +123,7 @@ function make_member_table(member_list,filter, value) {
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            // input.value = member.name;   
+            input.value = member.email;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
@@ -115,7 +133,7 @@ function make_member_table(member_list,filter, value) {
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            // input.value = member.name;   
+            input.value = member.phone;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
@@ -173,10 +191,10 @@ function edit(member_id){
         "city": objects[0].value,
         "street": objects[1].value,
         "zipcode": objects[2].value,
-        "email": objects[3].value,
+        //"email": objects[3].value,
         "phone": objects[4].value,
-        "managerId": objects[5].value,
-        "grade": objects[6].value
+        //"managerId": managerMap.get(objects[5].value),
+        //"grade": objects[6].value
     };
     
     console.log(data);
@@ -221,3 +239,4 @@ function remove(member_id){
         alert('삭제 서버 오류');
     });
 }
+

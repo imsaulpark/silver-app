@@ -2,6 +2,21 @@
 let learning_list = new Array();
 var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
 var date = new Date();//today의 Date를 세어주는 역할
+let categories = new Array(8);
+let categories_btn = new Array(8);
+
+for(let i=0; i<8; i++){
+    categories[i] = new Array();
+}
+
+for(let i=0; i<8; i++){
+
+        categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
+        categories_btn[i].addEventListener('click', (event) =>{    
+        make_problem_table(categories[i]);
+
+    })
+}
 
 get_all_learning_list();
 get_member_list();  //대상자 목록 받아오기
@@ -43,7 +58,7 @@ var member_list = new Array();
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
 function get_member_list() {
-    let data = { "centerId": 3 };
+    let data = { "centerId": 1 };
     $.ajax({
         type: 'GET',
         url: 'http://13.209.38.201:8080/members/patients',
@@ -122,23 +137,34 @@ function set_learning_category(data) {
     // category7.push({ "id": 0, "name": '-' });
     // category8.push({ "id": 0, "name": '-' });
     console.log(data);
+    learning_list.push({ "id": 0, "name": "-" });
     data.forEach(learning => {
-        learning_list.push({ "id": learning.id, "name": learning.name });   
+        learning_list.push({ "id": learning.id, "name": learning.name });
+
         switch (learning.categoryId) {
-            case 4:
-                category4.push({ "id": learning.id, "name": learning.name });
-                break;
-            case 5:
-                category5.push({ "id": learning.id, "name": learning.name });
-                break;
             case 6:
-                category6.push({ "id": learning.id, "name": learning.name });
+                categories[0].push({ "id": learning.id, "name": learning.name });
                 break;
             case 7:
-                category7.push({ "id": learning.id, "name": learning.name });
+                categories[1].push({ "id": learning.id, "name": learning.name });
                 break;
             case 8:
-                category8.push({ "id": learning.id, "name": learning.name });
+                categories[2].push({ "id": learning.id, "name": learning.name });
+                break;
+            case 9:
+                categories[3].push({ "id": learning.id, "name": learning.name });
+                break;
+            case 10:
+                categories[4].push({ "id": learning.id, "name": learning.name });
+                break;
+            case 11:
+                categories[5].push({ "id": learning.id, "name": learning.name });
+                break;
+            case 12:
+                categories[6].push({ "id": learning.id, "name": learning.name });
+                break;
+            case 13:
+                categories[7].push({ "id": learning.id, "name": learning.name });
                 break;
             default:
                 break;
@@ -146,7 +172,7 @@ function set_learning_category(data) {
     });
     //console.log(learning_list);
     //defualt 러닝 설정
-    make_problem_table(learning_list);
+    make_problem_table(categories_btn[0]);
     buildCalendar();
     //console.log(category4);
 
@@ -304,30 +330,6 @@ function put_learning_schedule(data) {
         alert('러닝 스케줄 서버 오류');
     });
 }
-
-
-// ajax communication example
-const person_add = document.querySelector('.person-control__add');
-person_add.addEventListener('click', (event) => {
-
-    let data = "good";
-
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/center-learnings',
-        data: data,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            alert('통신 성공');
-        } else {
-            alert('통신 실패');
-        }
-    }).fail(function (r) {
-        alert('서버 오류');
-    });
-});
 
 
 function prevCalendar() {//이전 달
@@ -537,35 +539,6 @@ function create_last_row(learning_time,lastEmptyCnt,year,month) {
     }
 }
 
-// problem category button clicked
-const category4_btn = document.querySelector('.category4__btn');
-const category5_btn = document.querySelector('.category5__btn');
-const category6_btn = document.querySelector('.category6__btn');
-const category7_btn = document.querySelector('.category7__btn');
-const category8_btn = document.querySelector('.category8__btn');
-
-make_problem_table(visual_problems);
-
-category4_btn.addEventListener('click', (event) => {
-    make_problem_table(category4);
-});
-
-category5_btn.addEventListener('click', (event) => {
-    make_problem_table(category5);
-});
-
-category6_btn.addEventListener('click', (event) => {
-    make_problem_table(category6);
-});
-
-category7_btn.addEventListener('click', (event) => {
-    make_problem_table(category7);
-});
-
-category8_btn.addEventListener('click', (event) => {
-    make_problem_table(category8);
-});
-
 
 
 //러닝 목록 받아오기
@@ -594,15 +567,17 @@ function get_learning_list(childrenId) {
 
 function make_problem_table(problems) {
 
-    let cnt = 1;
+    console.log(problems);
+
+    let cnt = 0;
     const problems_table = document.querySelector('.problems__table');
     while (problems_table.rows.length > 1)
         problems_table.deleteRow(1);
     while (true) {
-        if (cnt == 19)
+        if (cnt == 18)
             break;
 
-        if ((cnt-1) % 3 == 0)
+        if ((cnt) % 3 == 0)
             var row = problems_table.insertRow();
 
         cell = row.insertCell();

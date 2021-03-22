@@ -48,10 +48,6 @@ body {
   /* background-color: pink; */
 }
 
-option {
-  text-align: center;
-}
-
 a {
   text-decoration: none;
   color: var(--color-while);
@@ -430,6 +426,14 @@ p {
 
 .person-table__header__zipcode {
   width: 200px;
+}
+
+.person-table__header__rrn {
+  width: 300px;
+}
+
+.person-table__header__email {
+  width: 300px;
 }
 
 .person-table__header__email {
