@@ -137,7 +137,6 @@ function set_learning_category(data) {
     // category7.push({ "id": 0, "name": '-' });
     // category8.push({ "id": 0, "name": '-' });
     console.log(data);
-    learning_list.push({ "id": 0, "name": "-" });
     data.forEach(learning => {
         learning_list.push({ "id": learning.id, "name": learning.name });
 
@@ -306,6 +305,7 @@ function post_learning_schedule(data) {
             alert('post_learning_schedule failed');
         }
     }).fail(function (r) {
+        console.log(r);
         alert('post_learning_schedule server error');
     });
 }
@@ -327,6 +327,7 @@ function put_learning_schedule(data) {
             alert('러닝 스케줄 통신 실패');
         }
     }).fail(function (r) {
+        console.log(r);
         alert('러닝 스케줄 서버 오류');
     });
 }

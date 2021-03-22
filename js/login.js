@@ -4,11 +4,8 @@ const button = document.querySelector('.login-btn');
 button.addEventListener('click', (event) => {
 
     let data = {
-        // "id":email.value,
-        "emailId":"saulpark@gmail.com",
-        //"password": SHA256(password.value)
-        "password": "a123456#!"
-        
+        "loginId":email.value,
+        "password": SHA256(password.value)
     }
     console.log(data);
 
@@ -25,6 +22,7 @@ button.addEventListener('click', (event) => {
             alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
         }
     }).fail(function (r) {
+		console.log(r);
         alert('로그인 서버 오류');
     });
 
