@@ -34,10 +34,7 @@ function search(){
     const select_box = document.querySelector('.search-content__filter');
     const input_box =  document.querySelector('.search-content__text');
     remove_table();
-    get_member_list(select_box.value, input_box.value, "patients");
-    get_member_list(select_box.value, input_box.value, "family");
     get_member_list(select_box.value, input_box.value, "managers");
-    get_member_list(select_box.value, input_box.value, "employees");
 }
 
 function remove_table(){

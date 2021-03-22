@@ -4,6 +4,7 @@ var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 tod
 var date = new Date();//today의 Date를 세어주는 역할
 let categories = new Array(8);
 let categories_btn = new Array(8);
+let child_category = new Map();
 
 for(let i=0; i<8; i++){
     categories[i] = new Array();
@@ -14,10 +15,12 @@ for(let i=0; i<8; i++){
         categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
         categories_btn[i].addEventListener('click', (event) =>{    
         make_problem_table(categories[i]);
-
+        let category_name = document.getElementById("dynamic-header");
+        category_name.innerHTML = child_category.get(i+6) + " 문제 리스트";
     })
 }
 
+parent_category_inquiry();
 get_all_learning_list();
 get_member_list();  //대상자 목록 받아오기
 // get_learning_schedule();
@@ -589,4 +592,45 @@ function make_problem_table(problems) {
 
         cnt++;
     }
+}
+
+function parent_category_inquiry(){
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/learning-categories/parents',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+            r.data.forEach(parent_category => {
+                child_category_inquiry(parent_category.id);
+            })
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        // alert('서버 오류');
+    });
+}
+
+function child_category_inquiry(parent_category){
+    
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/learning-categories/children?parentId='+parent_category,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+            r.data.forEach(element => {
+                child_category.set(element.id, element.name);
+            })
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        // alert('서버 오류');
+    });
 }

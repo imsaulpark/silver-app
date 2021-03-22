@@ -237,7 +237,7 @@ p {
 }
 
 .problems__td {
-  height: 35px;
+  height: 55px;
   width: 33.3%;
 }
 
@@ -261,6 +261,15 @@ p {
   flex-direction: row;
   justify-content: space-between;
   margin-bottom: 10px;
+}
+
+.problem-selection-btn {
+  background-color: var(--color-light-grey);
+  width: 100px;
+  height: 30px;
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: var(--size-border-radius);
 }
 
 #calendar {

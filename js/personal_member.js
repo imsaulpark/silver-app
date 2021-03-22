@@ -4,7 +4,10 @@ call_get_member_list();
 
 function call_get_member_list(){
 
+    get_member_list(null,null,"patients");
+    get_member_list(null,null,"family");
     get_member_list(null,null,"managers");
+    get_member_list(null,null,"employees");
     
 }
 
@@ -174,6 +177,31 @@ function make_member_table(member_list,filter, value, member_type) {
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
 
+            
+            // 담당자명
+            cell = row.insertCell();
+            cell.classList.add('brief_description_cell');
+            input = document.createElement('input');
+            input.type = 'text';
+            if(member.managerName != undefined)
+                input.value = member.managerName;
+            input.classList.add('brief_description');
+            input.classList.add("selector"+member.id);
+            cell.appendChild(input);
+
+            
+            // 등급
+            cell = row.insertCell();
+            cell.classList.add('brief_description_cell');
+            input = document.createElement('input');
+            input.type = 'text';
+            if(member.grade != undefined)
+                input.value = member.grade;
+            input.classList.add('brief_description');
+            input.classList.add("selector"+member.id);
+            cell.appendChild(input);
+
+            
             // 가입상태
             cell = row.insertCell();
             if(member.status == "JOINED" || member[filter] == "가입")
@@ -181,10 +209,8 @@ function make_member_table(member_list,filter, value, member_type) {
             else if(member.status == "YET" || member[filter] == "미가입")
                 cell.innerHTML = "미가입";
             else if(member.status == "WAITING" || member[filter] == "가입대기중")
-                cell.innerHML = "가입대기중";
-
-            if(member.status == "JOINED" || member[filter] == "가입")
-
+                cell.innerHTML = "가입대기중";
+                
 
             //변경 버튼
             cell = row.insertCell();
