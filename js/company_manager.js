@@ -122,33 +122,15 @@ function make_member_table(member_list,filter, value, member_type) {
 
             // city
             cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.city;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
+            cell.innerHTML = member.city;
             
             // street
             cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.street;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
+            cell.innerHTML = member.street;
 
             // zipcode
             cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.zipcode;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
+            cell.innerHTML = member.street;
 
             // rrn
             cell = row.insertCell();
@@ -156,23 +138,11 @@ function make_member_table(member_list,filter, value, member_type) {
 
             // email
             cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.email;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
+            cell.innerHTML = member.email;
 
             // phone
             cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.phone;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
+            cell.innerHTML = member.phone;
 
             // 가입상태
             cell = row.insertCell();
@@ -181,77 +151,38 @@ function make_member_table(member_list,filter, value, member_type) {
             else if(member.status == "YET" || member[filter] == "미가입")
                 cell.innerHTML = "미가입";
             else if(member.status == "WAITING" || member[filter] == "가입대기중")
-                cell.innerHML = "가입대기중";
+                cell.innerHTML = "가입대기중";
 
-            if(member.status == "JOINED" || member[filter] == "가입")
+            if(member.status == "JOINED" || member[filter] == "가입" || member.status == "YET" || member[filter] == "미가입")
+            {
+                //탈퇴 버튼
+                cell = row.insertCell();
+                cell.innerHTML += " <button onclick='remove("+member.id+")' class='drop-btn' />";
+                text = document.createTextNode("삭제");
+                cell.children[0].appendChild(text);
+                cell.classList.add('transparent-border');                
+            }else if(member.status == "WAITING" || member[filter] == "가입대기중"){
+                //가입 승인 버튼
+                cell = row.insertCell();
+                cell.innerHTML += " <button onclick='join_requset("+member.id+", \"approve\")' class='edit-btn' />";
+                text = document.createTextNode("승인");
+                cell.children[0].appendChild(text);
+                cell.classList.add('transparent-border');
+
+                //가입 거절 버튼
+                cell = row.insertCell();
+                cell.innerHTML += " <button onclick='join_requset("+member.id+", \"decline\")' class='drop-btn' />";
+                text = document.createTextNode("거절");
+                cell.children[0].appendChild(text);
+                cell.classList.add('transparent-border');
+            }
 
 
-            //변경 버튼
-            cell = row.insertCell();
-            cell.innerHTML += " <button onclick='edit("+member.id+")' class='edit-btn' />";
-            text = document.createTextNode("변경");
-            cell.children[0].appendChild(text);
-            cell.classList.add('transparent-border');
-
-            //탈퇴 버튼
-            cell = row.insertCell();
-            cell.innerHTML += " <button onclick='remove("+member.id+")' class='drop-btn' />";
-            text = document.createTextNode("삭제");
-            cell.children[0].appendChild(text);
-            cell.classList.add('transparent-border');
         }
     });
 
 
 }
-
-
-function edit(member_id){
-    let objects = document.querySelectorAll(".selector"+member_id);
-    // console.log(objects[6].value);
-
-    if(objects[5].value ==""){
-        var data = {
-            "city": objects[0].value,
-            "street": objects[1].value,
-            "zipcode": objects[2].value,
-            "email": objects[3].value,
-            "phone": objects[4].value,
-        };      
-    }else{
-        var data = {
-            "city": objects[0].value,
-            "street": objects[1].value,
-            "zipcode": objects[2].value,
-            "email": objects[3].value,
-            "phone": objects[4].value,
-            "managerId": managerMap.get(objects[5].value),
-            "grade": objects[6].value
-        };    
-    }
-
-    
-    // console.log(managerMap);
-    
-    $.ajax({
-        type: 'PUT',
-        url: 'http://13.209.38.201:8080/members/patients/'+member_id,
-        data: JSON.stringify(data),
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r.data);
-            alert('변경되었습니다.');
-        } else {
-            alert('변경 중 오류');
-        }
-    }).fail(function (r) {
-        console.log(r);
-        alert('변경 서버 오류');
-    });
-}
-
 
 function remove(member_id){
 
@@ -274,3 +205,26 @@ function remove(member_id){
     });
 }
 
+function join_requset(member_id, join_request_string){
+
+    $.ajax({
+        type: 'PUT',
+        url: 'http://13.209.38.201:8080/members/managers/approval/'+member_id+"?type="+join_request_string,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+            if(join_request_string == "approve")
+                alert('승인되었습니다.');
+            else
+                alert("거절되었습니다.");
+            location.reload();
+        } else {
+            alert('승인 중 오류');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        alert('승인 서버 오류');
+    });
+}
