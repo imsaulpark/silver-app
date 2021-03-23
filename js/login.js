@@ -1,7 +1,7 @@
 const email = document.querySelector('.login-email');
 const password = document.querySelector('.login-password');
 const button = document.querySelector('.login-btn');
-button.addEventListener('click', (event) => {
+button.addEventListener('click', () => {
 
     let data = {
         "loginId":email.value,
@@ -11,19 +11,27 @@ button.addEventListener('click', (event) => {
 
     $.ajax({
         type: 'POST',
-        url: 'http://13.209.38.201:8080/users/login',
+        url: 'http://13.209.38.201:8080/members/login',
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
+			console.log(r);
             location.href="schedule.html";
-        } else {
-            alert('이메일 혹은 비밀번호가 일치하지 않습니다.');
         }
     }).fail(function (r) {
-		console.log(r);
-        alert('로그인 서버 오류');
+		console.log(r.status);
+		if(r.status == "400"){
+			console.log(r);
+            alert(r.responseJSON.message);
+        }else if(r.status == "401"){
+			console.log(r);
+            alert(r.responseJSON.message);
+		}else{
+			console.log(r);
+			alert('로그인 서버 오류');
+		}
     });
 
 });

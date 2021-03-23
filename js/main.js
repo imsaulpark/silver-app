@@ -623,7 +623,7 @@ function child_category_inquiry(parent_category){
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            console.log(r.data);
+            console.log(r);
             r.data.forEach(element => {
                 child_category.set(element.id, element.name);
             })
