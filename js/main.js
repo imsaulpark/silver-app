@@ -61,7 +61,7 @@ var member_list = new Array();
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
 function get_member_list() {
-    let data = { "centerId": 1 };
+    let data = { "centerId": getCookie("data").centerId };
     $.ajax({
         type: 'GET',
         url: 'http://13.209.38.201:8080/members/patients',

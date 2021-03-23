@@ -1,3 +1,4 @@
+
 const email = document.querySelector('.login-email');
 const password = document.querySelector('.login-password');
 const button = document.querySelector('.login-btn');
@@ -18,6 +19,14 @@ button.addEventListener('click', () => {
     }).done(function (r) {
         if (r.status == "OK") {
 			console.log(r);
+
+			let data = {};//Creating custom object  
+			data.memberId = r.data.memberId;  
+			data.centerId = r.data.centerId;
+			data.memberType = r.data.type;
+			deleteCookie("data");
+			setCookie("data", JSON.stringify(data), 100);
+			console.log(getCookie("data"));
             location.href="schedule.html";
         }
     }).fail(function (r) {

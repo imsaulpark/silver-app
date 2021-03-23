@@ -12,7 +12,7 @@ function call_get_member_list(){
 }
 
 function get_member_list(filter, value, member_type) {
-    let data = { "centerId": 1 };
+    let data = { "centerId": getCookie("data").centerId };
     $.ajax({
         type: 'GET',
         url: 'http://13.209.38.201:8080/members/'+member_type,
@@ -314,7 +314,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
     
     // 아이디
@@ -326,7 +326,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // 성별
@@ -335,7 +335,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // city
@@ -344,7 +344,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
     
     // street
@@ -353,7 +353,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // zipcode
@@ -362,7 +362,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // rrn
@@ -371,7 +371,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // email
@@ -380,7 +380,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     // phone
@@ -389,7 +389,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     
@@ -399,7 +399,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     
@@ -409,7 +409,7 @@ function add() {
     input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
-    input.classList.add("created"+member_table.rows.length-1);
+    input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
     
@@ -428,7 +428,7 @@ function add() {
 function save(row_num){
     let objects = document.querySelectorAll(".created"+row_num);
     // console.log(objects[6].value);
-
+console.log(objects);
     let type = "";
     if(objects[0].value == "관리자")
         type = "M";
