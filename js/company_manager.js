@@ -46,7 +46,6 @@ function remove_table(){
 
 function make_member_table(member_list,filter, value, member_type) {
     const member_table = document.querySelector('.person-table');
-    let count = 1;
     let tag= false;
     if(value == undefined)
         tag = true;
@@ -59,10 +58,6 @@ function make_member_table(member_list,filter, value, member_type) {
         }
 
         
-        console.log("---");
-        
-        console.log(member[filter]);
-
         if(filter == "type" && member[filter] == "E")
             member[filter] = "근로자";
         else if(filter == "type" && member[filter] == "M")
@@ -78,13 +73,6 @@ function make_member_table(member_list,filter, value, member_type) {
         else if(filter == "status" && member[filter] == "WAITING")
             member[filter] = "가입대기중";
                 
-            
-            console.log((filter == "type") && (value == "회원"));
-            console.log(filter=="type");
-            console.log(value=="회원");
-            console.log(member[filter]);
-
-
         // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && member[filter] == value ))
         {

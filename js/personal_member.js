@@ -210,7 +210,7 @@ function make_member_table(member_list,filter, value, member_type) {
                 cell.innerHTML = "미가입";
             else if(member.status == "WAITING" || member[filter] == "가입대기중")
                 cell.innerHTML = "가입대기중";
-                
+
 
             //변경 버튼
             cell = row.insertCell();
@@ -274,7 +274,7 @@ function edit(member_id){
         }
     }).fail(function (r) {
         console.log(r);
-        alert('변경 서버 오류');
+        alert('입력 형식이 올바르지 않습니다.');
     });
 }
 
@@ -300,3 +300,175 @@ function remove(member_id){
     });
 }
 
+function add() {
+    const member_table = document.querySelector('.person-table');
+    const row = member_table.insertRow();
+
+    // 번호
+    let cell = row.insertCell();
+    cell.innerHTML = member_table.rows.length-1;
+
+    // 타입
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+    
+    // 아이디
+    cell = row.insertCell();
+
+    // 이름
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // 성별
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // city
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+    
+    // street
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // zipcode
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // rrn
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // email
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    // phone
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    
+    // 담당자명
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    
+    // 등급
+    cell = row.insertCell();
+    cell.classList.add('brief_description_cell');
+    input = document.createElement('input');
+    input.type = 'text';
+    input.classList.add('brief_description');
+    input.classList.add("created"+member_table.rows.length-1);
+    cell.appendChild(input);
+
+    
+    // 가입상태
+    cell = row.insertCell();
+    cell.innerHTML = "미가입";    
+
+    //저장 버튼
+    cell = row.insertCell();
+    cell.innerHTML += " <button onclick='save("+(member_table.rows.length-1)+")' class='create-btn' />";
+    text = document.createTextNode("저장");
+    cell.children[0].appendChild(text);
+    cell.classList.add('transparent-border');
+}
+
+function save(row_num){
+    let objects = document.querySelectorAll(".created"+row_num);
+    // console.log(objects[6].value);
+
+    let type = "";
+    if(objects[0].value == "관리자")
+        type = "M";
+    else if(objects[0].value == "근로자")
+        type = "E";
+    else if(objects[0].value == "보호자")
+        type = "F";
+    else if(objects[0].value == "회원")
+        type = "P";
+    
+    let data = {
+        "type": type,
+        "name": objects[1].value,
+        "sex":  objects[2].value,
+        "city": objects[3].value,
+        "street": objects[4].value,
+        "zipcode": objects[5].value,
+        "rrn": objects[6].value,
+        "email": objects[7].value,
+        "phone": objects[8].value,
+        "managerId": managerMap.get(objects[9].value),
+        "grade": objects[10].value
+    };    
+   
+    $.ajax({
+        type: 'POST',
+        url: 'http://13.209.38.201:8080/members/new',
+        data: JSON.stringify(data),
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+            alert('저장되었습니다.');
+            location.reload();
+        } else {
+            alert('변경 중 오류');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        alert('입력 형식이 올바르지 않습니다.');
+    });
+}
