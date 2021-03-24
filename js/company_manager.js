@@ -105,17 +105,13 @@ function make_member_table(member_list,filter, value, member_type) {
             cell = row.insertCell();
             cell.innerHTML = member.sex;
 
-            // city
+            // address
             cell = row.insertCell();
-            cell.innerHTML = member.city;
+            cell.innerHTML = member.address;
             
-            // street
-            cell = row.insertCell();
-            cell.innerHTML = member.street;
-
             // zipcode
             cell = row.insertCell();
-            cell.innerHTML = member.street;
+            cell.innerHTML = member.zipcode;
 
             // rrn
             cell = row.insertCell();

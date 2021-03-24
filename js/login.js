@@ -27,7 +27,12 @@ button.addEventListener('click', () => {
 			deleteCookie("data");
 			setCookie("data", JSON.stringify(data), 100);
 			console.log(getCookie("data"));
-            location.href="schedule.html";
+			if(r.data.type == "M")
+            	location.href="schedule.html";
+			else if(r.data.type == "A")
+				location.href = "company_manager.html";
+			else
+				alert("접근 권한이 없습니다.");
         }
     }).fail(function (r) {
 		console.log(r.status);

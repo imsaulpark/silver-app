@@ -425,12 +425,8 @@ p {
   width: 100px;
 }
 
-.person-table__header__city {
-  width: 150px;
-}
-
-.person-table__header__street {
-  width: 200px;
+.person-table__header__address {
+  width: 400px;
 }
 
 .person-table__header__zipcode {
@@ -463,6 +459,18 @@ p {
 
 .person-table__header__status {
   width: 150px;
+}
+
+.person-table__header__description {
+  width: 350px;
+}
+
+.logout-btn {
+  width: 100px;
+  height: 30px;
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: var(--size-border-radius);
 }
 
 .drop-btn {

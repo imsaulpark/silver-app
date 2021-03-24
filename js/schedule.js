@@ -6,24 +6,24 @@ let categories = new Array(8);
 let categories_btn = new Array(8);
 let child_category = new Map();
 
-for(let i=0; i<8; i++){
-    categories[i] = new Array();
+function initialize_categories(){
+    for(let i=0; i<8; i++){
+        categories[i] = new Array();
+    }
+    
+    for(let i=0; i<8; i++){
+    
+            categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
+            categories_btn[i].addEventListener('click', (event) =>{    
+            make_problem_table(categories[i], i+6);
+        })
+    }    
 }
 
-for(let i=0; i<8; i++){
-
-        categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
-        categories_btn[i].addEventListener('click', (event) =>{    
-        make_problem_table(categories[i]);
-        let category_name = document.getElementById("dynamic-header");
-        category_name.innerHTML = child_category.get(i+6) + " 문제 리스트";
-    })
-}
-
+initialize_categories();
 parent_category_inquiry();
 get_all_learning_list();
 get_member_list();  //대상자 목록 받아오기
-// get_learning_schedule();
 
 let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
 let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
@@ -172,9 +172,11 @@ function set_learning_category(data) {
                 break;
         }
     });
-    //console.log(learning_list);
-    //defualt 러닝 설정
-    make_problem_table(categories_btn[0]);
+
+    make_problem_table(categories[0],6);
+    
+    let category_name = document.getElementById("dynamic-header");
+    category_name.innerHTML ="시지각 영역" + " 문제 리스트";
     buildCalendar();
     //console.log(category4);
 
@@ -569,9 +571,12 @@ function get_learning_list(childrenId) {
 
 
 
-function make_problem_table(problems) {
+function make_problem_table(problems, category_num) {
 
-    console.log(problems);
+    
+console.log(child_category);
+    let category_name = document.getElementById("dynamic-header");
+    category_name.innerHTML = child_category.get(category_num) + " 문제 리스트";
 
     let cnt = 0;
     const problems_table = document.querySelector('.problems__table');

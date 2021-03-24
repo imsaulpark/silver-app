@@ -22,12 +22,12 @@ var setCookie = function(name, value, exp) {
     
     
 function getCookie(name) {
-    console.log(document.cookie);
+    // console.log(document.cookie);
     if( document.cookie.length!=0){
         var value = document.cookie.match(new RegExp(
             "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
           ))[1];
-        console.log(value);
+        // console.log(value);
         //Parsing JSON string to JSON object  
         value = JSON.parse(value);  
     }
@@ -37,6 +37,6 @@ function getCookie(name) {
 
 function deleteCookie(name) {
     document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
-    console.log(document.cookie);
+    // console.log(document.cookie);
 };
         

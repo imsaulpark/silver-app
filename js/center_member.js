@@ -29,6 +29,7 @@ function get_member_list(filter, value, member_type) {
             // alert('통신 실패');
         }
     }).fail(function (r) {
+        console.log(r);
         // alert('서버 오류');
     });
 };
@@ -65,10 +66,6 @@ function make_member_table(member_list,filter, value, member_type) {
         }
 
         
-        console.log("---");
-        
-        console.log(member[filter]);
-
         if(filter == "type" && member[filter] == "E")
             member[filter] = "근로자";
         else if(filter == "type" && member[filter] == "M")
@@ -83,13 +80,6 @@ function make_member_table(member_list,filter, value, member_type) {
             member[filter] = "가입";
         else if(filter == "status" && member[filter] == "WAITING")
             member[filter] = "가입대기중";
-                
-            
-            console.log((filter == "type") && (value == "회원"));
-            console.log(filter=="type");
-            console.log(value=="회원");
-            console.log(member[filter]);
-
 
         // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && member[filter] == value ))
@@ -99,7 +89,8 @@ function make_member_table(member_list,filter, value, member_type) {
             // 번호
             let cell = row.insertCell();
             cell.innerHTML = member_table.rows.length-1;
-
+            cell.classList.add("type"+member.id);
+            
             // 타입
             cell = row.insertCell();
             if(member_type == "managers")
@@ -123,26 +114,16 @@ function make_member_table(member_list,filter, value, member_type) {
             cell = row.insertCell();
             cell.innerHTML = member.sex;
 
-            // city
+            // address
             cell = row.insertCell();
             cell.classList.add('brief_description_cell');
             input = document.createElement('input');
             input.type = 'text';
-            input.value = member.city;
+            input.value = member.address;
             input.classList.add('brief_description');
             input.classList.add("selector"+member.id);
             cell.appendChild(input);
-            
-            // street
-            cell = row.insertCell();
-            cell.classList.add('brief_description_cell');
-            input = document.createElement('input');
-            input.type = 'text';
-            input.value = member.street;
-            input.classList.add('brief_description');
-            input.classList.add("selector"+member.id);
-            cell.appendChild(input);
-
+           
             // zipcode
             cell = row.insertCell();
             cell.classList.add('brief_description_cell');
@@ -234,25 +215,37 @@ function make_member_table(member_list,filter, value, member_type) {
 
 function edit(member_id){
     let objects = document.querySelectorAll(".selector"+member_id);
+    let type_cell = document.querySelector(".type"+member_id);
+    let type = "";
+    if(type_cell.innerHTML == "근로자")
+        type = "employees";
+    else if(type_cell.innerHTML == "관리자")
+        type = "managers";
+    else if(type_cell.innerHTML == "회원")
+        type = "patients";
+    else if(type_cell.innerHTML == "보호자")
+        type = "family";
+
+    
     // console.log(objects[6].value);
+
+    console.log()
 
     if(objects[5].value ==""){
         var data = {
-            "city": objects[0].value,
-            "street": objects[1].value,
-            "zipcode": objects[2].value,
-            "email": objects[3].value,
-            "phone": objects[4].value,
+            "address": objects[0].value,
+            "zipcode": objects[1].value,
+            "email": objects[2].value,
+            "phone": objects[3].value,
         };      
     }else{
         var data = {
-            "city": objects[0].value,
-            "street": objects[1].value,
-            "zipcode": objects[2].value,
-            "email": objects[3].value,
-            "phone": objects[4].value,
-            "managerId": managerMap.get(objects[5].value),
-            "grade": objects[6].value
+            "address": objects[0].value,
+            "zipcode": objects[1].value,
+            "email": objects[2].value,
+            "phone": objects[3].value,
+            "managerId": managerMap.get(objects[4].value),
+            "grade": objects[5].value
         };    
     }
 
@@ -261,7 +254,7 @@ function edit(member_id){
     
     $.ajax({
         type: 'PUT',
-        url: 'http://13.209.38.201:8080/members/patients/'+member_id,
+        url: 'http://13.209.38.201:8080/members/'+type+'/'+member_id,
         data: JSON.stringify(data),
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
@@ -338,7 +331,7 @@ function add() {
     input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
 
-    // city
+    // address
     cell = row.insertCell();
     cell.classList.add('brief_description_cell');
     input = document.createElement('input');
@@ -347,15 +340,6 @@ function add() {
     input.classList.add("created"+(member_table.rows.length-1));
     cell.appendChild(input);
     
-    // street
-    cell = row.insertCell();
-    cell.classList.add('brief_description_cell');
-    input = document.createElement('input');
-    input.type = 'text';
-    input.classList.add('brief_description');
-    input.classList.add("created"+(member_table.rows.length-1));
-    cell.appendChild(input);
-
     // zipcode
     cell = row.insertCell();
     cell.classList.add('brief_description_cell');
@@ -443,14 +427,14 @@ console.log(objects);
         "type": type,
         "name": objects[1].value,
         "sex":  objects[2].value,
-        "city": objects[3].value,
-        "street": objects[4].value,
-        "zipcode": objects[5].value,
-        "rrn": objects[6].value,
-        "email": objects[7].value,
-        "phone": objects[8].value,
-        "managerId": managerMap.get(objects[9].value),
-        "grade": objects[10].value
+        "address": objects[3].value,
+        "zipcode": objects[4].value,
+        "rrn": objects[5].value,
+        "email": objects[6].value,
+        "phone": objects[7].value,
+        "managerId": managerMap.get(objects[8].value),
+        "grade": objects[9].value,
+        "centerId": getCookie("data").centerId
     };    
    
     $.ajax({
@@ -460,11 +444,12 @@ console.log(objects);
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r.data);
+        if (r.status == "CREATED") {
+            // console.log(r.data);
             alert('저장되었습니다.');
             location.reload();
         } else {
+            console.log(r);
             alert('변경 중 오류');
         }
     }).fail(function (r) {
