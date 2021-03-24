@@ -1,19 +1,37 @@
 let managerMap = new Map()
 
-call_get_member_list();
 
-function call_get_member_list(){
+get_center_list();
 
-    get_member_list(null,null,"managers");
-    
-}
 
-function get_member_list(filter, value, member_type) {
-    let data = { "centerId": 1 };
+
+function get_center_list() {
     $.ajax({
         type: 'GET',
-        url: 'http://13.209.38.201:8080/members/'+member_type,
-        data: data,
+        url: 'http://13.209.38.201:8080/centers/all',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data)
+            r.data.forEach((center)=>{
+                get_member_list(null, null, "managers", center.id);
+            })
+            // alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        // alert('서버 오류');
+    });
+};
+
+function get_member_list(filter, value, member_type, centerId) {
+    
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/members/'+member_type +'?centerId='+centerId,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {

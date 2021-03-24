@@ -5,7 +5,7 @@ get_center_list();
 function get_center_list(filter, value) {
     $.ajax({
         type: 'GET',
-        url: 'http://13.209.38.201:8080/centers',
+        url: 'http://13.209.38.201:8080/centers/all',
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
