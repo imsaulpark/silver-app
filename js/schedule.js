@@ -6,6 +6,8 @@ let categories = new Array(8);
 let categories_btn = new Array(8);
 let child_category = new Map();
 
+console.log(getCookie("data"));
+
 function initialize_categories(){
     for(let i=0; i<8; i++){
         categories[i] = new Array();

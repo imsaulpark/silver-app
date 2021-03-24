@@ -24,6 +24,7 @@ button.addEventListener('click', () => {
 			data.memberId = r.data.memberId;  
 			data.centerId = r.data.centerId;
 			data.memberType = r.data.type;
+			data.name = r.data.name;
 			deleteCookie("data");
 			setCookie("data", JSON.stringify(data), 100);
 			console.log(getCookie("data"));

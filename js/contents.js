@@ -5,23 +5,11 @@ let categories = new Array(8);
 let categories_btn = new Array(8);
 let child_category = new Map();
 
-function initialize_categories(){
-    for(let i=0; i<8; i++){
-        categories[i] = new Array();
-    }
-    
-    for(let i=0; i<8; i++){
-    
-            categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
-            categories_btn[i].addEventListener('click', (event) =>{    
-                get_learning_list(i+6);
-            })
-    }    
-}
-
-initialize_categories();
+console.log(1);
 parent_category_inquiry();
-
+console.log(3);
+initialize_categories();
+console.log(5);
 
 function temp(){
     let category_name = document.querySelector(".learning-problem");
@@ -31,6 +19,8 @@ function temp(){
 
 //러닝 목록 받아오기
 function get_learning_list(categoryId) {
+    
+console.log(child_category);
     category_id = categoryId;
     let data = { "categoryId": categoryId };
     $.ajax({
@@ -192,45 +182,45 @@ function add(){
     
     const row = problem_table.insertRow();
     
+
+    // 이름
     let cell = row.insertCell();
     cell.classList.add('brief_description_cell');
-    let input = document.createElement('input');
+    input = document.createElement('input');
     input.type = 'text';
     input.classList.add('brief_description');
     input.classList.add("created"+(problem_table.rows.length-1));
     cell.appendChild(input);
 
+    // address
     cell = row.insertCell();
     cell.classList.add('brief_description_cell');
     input = document.createElement('input');
-    input.type = 'text';    
+    input.type = 'text';
     input.classList.add('brief_description');
     input.classList.add("created"+(problem_table.rows.length-1));
     cell.appendChild(input);
-
-    cell = row.insertCell();
-    cell.classList.add('long_description_cell');
-    let textarea = document.createElement('textarea');
-    textarea.classList.add('long_description');
-    textarea.classList.add("created"+(problem_table.rows.length-1));
-    cell.appendChild(input);
-
-
+   
+   
+    // zipcode
     cell = row.insertCell();
     cell.classList.add('brief_description_cell');
     input = document.createElement('input');
-    input.type = 'text';    
+    input.type = 'text';
     input.classList.add('brief_description');
     input.classList.add("created"+(problem_table.rows.length-1));
     cell.appendChild(input);
+   
 
+    // phone
     cell = row.insertCell();
     cell.classList.add('brief_description_cell');
     input = document.createElement('input');
-    input.type = 'text';    
+    input.type = 'text';
     input.classList.add('brief_description');
     input.classList.add("created"+(problem_table.rows.length-1));
     cell.appendChild(input);
+   
 
 
 
@@ -244,7 +234,7 @@ function add(){
     cell.appendChild(input);
 
     cell = row.insertCell();
-    cell.innerHTML += " <button onclick='save("+(problem_table.rows.length-1)+")' class='save-btn' />";
+    cell.innerHTML += " <button onclick='save("+(problem_table.rows.length-1)+")' class='create-btn' />";
     text = document.createTextNode("저장");
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
@@ -272,7 +262,7 @@ function save(row_num){
         if (r.status == "CREATED") {
             // console.log(r.data);
             alert('저장되었습니다.');
-            location.reload();
+            get_learning_list(category_id);
         } else {
             console.log(r);
             alert('변경 중 오류');
@@ -304,6 +294,7 @@ function save(row_num){
 
 
 function parent_category_inquiry(){
+    console.log(2);
     $.ajax({
         type: 'GET',
         url: 'http://13.209.38.201:8080/learning-categories/parents',
@@ -313,7 +304,8 @@ function parent_category_inquiry(){
         if (r.status == "OK") {
             console.log(r.data);
             r.data.forEach(parent_category => {
-                child_category_inquiry(parent_category.id);
+                if(parent_category.id != 0)
+                    child_category_inquiry(parent_category.id);
             })
         } else {
             // alert('통신 실패');
@@ -332,14 +324,32 @@ function child_category_inquiry(parent_category){
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            console.log(r);
+            console.log(r.data);
             r.data.forEach(element => {
                 child_category.set(element.id, element.name);
             })
+            
+console.log(child_category);
         } else {
             // alert('통신 실패');
         }
     }).fail(function (r) {
         // alert('서버 오류');
     });
+}
+
+
+function initialize_categories(){
+    console.log(4);
+    console.log(child_category);
+    for(let i=0; i<8; i++){
+        categories[i] = new Array();
+    }
+    for(let i=0; i<8; i++){
+    
+            categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
+            categories_btn[i].addEventListener('click', (event) =>{    
+                get_learning_list(i+6);
+            })
+    }    
 }
