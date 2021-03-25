@@ -149,8 +149,7 @@ function edit(problem_id, category_id){
             alert('센터 러닝 스케줄 통신 실패');
         }
     }).fail(function (r) {
-        console.log(r);
-        alert('센터 러닝 스케줄 서버 오류');
+        alert("입력을 확인하세요.");
     });
 }
 
@@ -268,8 +267,7 @@ function save(row_num){
             alert('변경 중 오류');
         }
     }).fail(function (r) {
-        console.log(r);
-        alert('입력 형식이 올바르지 않습니다.');
+        alert(Object.entries(r.responseJSON.data)[0][1]);
     });
 }
 

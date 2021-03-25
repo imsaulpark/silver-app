@@ -266,8 +266,7 @@ function edit(member_id){
             alert('변경 중 오류');
         }
     }).fail(function (r) {
-        console.log(r);
-        alert('입력 형식이 올바르지 않습니다.');
+        alert(Object.entries(r.responseJSON.data)[0][1]);
     });
 }
 
@@ -453,7 +452,6 @@ console.log(objects);
             alert('변경 중 오류');
         }
     }).fail(function (r) {
-        console.log(r);
-        alert('입력 형식이 올바르지 않습니다.');
+        alert(Object.entries(r.responseJSON.data)[0][1]);
     });
 }
