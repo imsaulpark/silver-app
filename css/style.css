@@ -406,63 +406,83 @@ p {
 }
 
 .person-table__header__number {
-  width: 100px;
+  min-width: 100px;
 }
 
 .person-table__header__type {
-  width: 100px;
+  min-width: 100px;
 }
 
 .person-table__header__id {
-  width: 200px;
+  min-width: 200px;
 }
 
 .person-table__header__name {
-  width: 150px;
+  min-width: 150px;
 }
 
 .person-table__header__sex {
-  width: 100px;
+  min-width: 100px;
 }
 
 .person-table__header__address {
-  width: 400px;
+  min-width: 400px;
 }
 
 .person-table__header__zipcode {
-  width: 200px;
+  min-width: 200px;
 }
 
 .person-table__header__rrn {
-  width: 300px;
+  min-width: 300px;
 }
 
 .person-table__header__email {
-  width: 300px;
+  min-width: 300px;
 }
 
 .person-table__header__email {
-  width: 300px;
+  min-width: 300px;
 }
 
 .person-table__header__phone {
-  width: 300px;
+  min-width: 300px;
 }
 
 .person-table__header__manager {
-  width: 150px;
+  min-width: 150px;
 }
 
 .person-table__header__grade {
-  width: 100px;
+  min-width: 100px;
 }
 
 .person-table__header__status {
-  width: 150px;
+  min-width: 150px;
 }
 
 .person-table__header__description {
-  width: 350px;
+  min-width: 350px;
+}
+
+.person-table__header__contents-name {
+  min-width: 200px;
+}
+
+.person-table__header__brief-description {
+  min-width: 300px;
+}
+
+.person-table__header__long-description {
+  min-width: 500px;
+}
+
+.person-table__header__url {
+  min-width: 300px;
+}
+
+.person-table__header__file {
+  min-width: 300px;
 }
 
 .logout-btn {

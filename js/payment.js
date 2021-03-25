@@ -1,3 +1,68 @@
+get_payment_item();
+
+function get_center_information() {
+
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/centers?id='+getCookie("data").centerId,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            return(r.data);
+            // alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        // alert('서버 오류');
+    });
+};
+
+function get_payment_item(){
+    
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/items',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            make_buttons(r.data);
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        // alert('서버 오류');
+    });
+}
+
+function make_buttons(buttonsInfo){
+    let div = document.querySelector('.payment-btn-box');
+    
+    buttonsInfo.forEach(buttonInfo => {
+
+        let button = document.createElement("input");
+        button.type = "button";
+        var p2 = "<p>paragraph 2</p>";
+        button.innerHTML(p2);
+        // button.onclick = pay(buttonInfo.price);
+      
+        div.appendChild(button);
+    })
+
+    
+
+   
+  }
+
+// <button id="check_module" class="payment-btn" onclick="pay(100000)" type="button">
+// <p class="payment-p">1개월 결제하기 <br><br> 100,000원</p>
+// </button>
+
+
 function pay(price) {
     var IMP = window.IMP; // 생략가능
     IMP.init('imp77939186');
