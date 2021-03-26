@@ -4,40 +4,140 @@ let category_id = 0;
 let categories = new Array(8);
 let categories_btn = new Array(8);
 let child_category = new Map();
+let parent_category = new Array();
+let cookie = getCookie("data");
 
-console.log(1);
-parent_category_inquiry();
-console.log(3);
-initialize_categories();
-console.log(5);
 
-function temp(){
-    let category_name = document.querySelector(".learning-problem");
-    category_name.innerHTML = "시지각 영역 문제 리스트";
+if(cookie==null){
+    location.href = "login.html";
+}else if (cookie.memberType != "A"){
+    history.back();
 }
 
+
+parent_category_inquiry()
+    .then(child_category_inquiry)
+
+
+    function parent_category_inquiry(){
+    
+        return new Promise((resolve, reject) => {
+    
+            $.ajax({
+                type: 'GET',
+                url: 'http://13.209.38.201:8080/learning-categories/parents',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            }).done(function (r) {
+                if (r.status == "OK") {
+                    resolve(r.data);
+                } else {
+                    reject(r);
+                    // alert('통신 실패');
+                }
+            }).fail(function (r) {
+                reject(r);
+                console.log(r);
+                // alert('서버 오류');
+            });
+        })
+    }
+    
+    function child_category_inquiry(parent_categories){
+    
+    
+        return new Promise((resolve, reject) => {
+    
+            parent_categories.forEach(parent_element => {
+                if(parent_element.id != 0)
+                    {
+                        parent_category.push(
+                            {
+                                "id": parent_element.id,
+                                "name": parent_element.name
+                            }
+                        );
+    
+                        $.ajax({
+                            type: 'GET',
+                            url: 'http://13.209.38.201:8080/learning-categories/children?parentId='+parent_element.id,
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json'
+                        }).done(function (r) {
+                            if (r.status == "OK") {
+                                console.log(r.data);
+ 
+                                r.data.forEach(child_element => {
+                                    child_category.set(child_element.id, child_element.name);
+                                })
+                                make_cateogry_table(parent_element,r.data);
+    
+                            } else {
+                                // alert('통신 실패');
+                            }
+                        }).fail(function (r) {
+                            // alert('서버 오류');
+                        });
+                    }
+            })
+    
+        });
+    }
+    
+
+function make_cateogry_table(parent, children){
+    console.log(children);
+    let categoryTable = document.querySelector('.problem-category__table');
+    let tag= false;
+
+    children.forEach(child => {
+
+        let row = document.createElement('tr');
+        let childrenHtml = "";
+
+        if(tag == false){
+            // 제공 영역
+            childrenHtml += "<td rowspan = "+children.length+"> "+parent.name+" </td>";
+            // row.appendChild(childrenHtml);
+
+            tag = true;
+        }
+
+        // 영역 분류
+        childrenHtml += "<td> "+child.name+" </td>";
+    
+        // 문제 선택 버튼
+        childrenHtml += "<td> <button onclick='get_learning_list("+child.id+")' class='category"+child.id+"__btn problem-selection-btn'>문제 선택</button></td>";
+
+        row.innerHTML = childrenHtml;
+        categoryTable.appendChild(row);
+    });
+
+    console.log("!!!");
+    console.log(child_category.keys().next().value);
+    // 처음 화면 뜰 때 첫 번째 카테고리를 테이블에 표시해줌
+    get_learning_list(child_category.keys().next().value);
+}
 
 //러닝 목록 받아오기
 function get_learning_list(categoryId) {
     
-console.log(child_category);
+    console.log(categoryId);
     category_id = categoryId;
-    let data = { "categoryId": categoryId };
     $.ajax({
         type: 'GET',
-        url: 'http://13.209.38.201:8080/learnings',
-        data: data,
+        url: 'http://13.209.38.201:8080/learnings?categoryId='+categoryId,
         contentType: 'application/json; charset=utf-8',
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
             make_problem_table(r.data, categoryId);
-            console.log(r.data);
             // alert('통신 성공');
         } else {
             // alert('통신 실패');
         }
     }).fail(function (r) {
+        console.log(r);
         // alert('서버 오류');
     });
 }
@@ -47,7 +147,6 @@ function make_problem_table(problem_list, categoryId) {
     let category_name = document.querySelector(".learning-problem");
     category_name.innerHTML =child_category.get(categoryId) + " 문제 리스트";
 
-    console.log(problem_list);
 
     const problem_table = document.querySelector('.problem-table');
     while (problem_table.rows.length > 1)
@@ -269,85 +368,4 @@ function save(row_num){
     }).fail(function (r) {
         alert(Object.entries(r.responseJSON.data)[0][1]);
     });
-}
-
-
-
-// $.ajax({
-//     type: 'GET',
-//     url: 'http://13.209.38.201:8080//learning-categories/parentId=5',
-//     contentType: 'application/json; charset=utf-8',
-//     dataType: 'json'
-// }).done(function (r) {
-//     if (r.status == "OK") {
-//         console.log(r.data);
-//         // alert('센터 러닝 스케줄 통신 성공');
-//     } else {
-//         alert('센터 러닝 스케줄 통신 실패');
-//     }
-// }).fail(function (r) {
-//     console.log(r);
-//     alert('센터 러닝 스케줄 서버 오류');
-// });
-
-
-function parent_category_inquiry(){
-    console.log(2);
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learning-categories/parents',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r.data);
-            r.data.forEach(parent_category => {
-                if(parent_category.id != 0)
-                    child_category_inquiry(parent_category.id);
-            })
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
-}
-
-function child_category_inquiry(parent_category){
-    
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learning-categories/children?parentId='+parent_category,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r.data);
-            r.data.forEach(element => {
-                child_category.set(element.id, element.name);
-            })
-            
-console.log(child_category);
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
-}
-
-
-function initialize_categories(){
-    console.log(4);
-    console.log(child_category);
-    for(let i=0; i<8; i++){
-        categories[i] = new Array();
-    }
-    for(let i=0; i<8; i++){
-    
-            categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
-            categories_btn[i].addEventListener('click', (event) =>{    
-                get_learning_list(i+6);
-            })
-    }    
 }

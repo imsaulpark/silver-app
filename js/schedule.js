@@ -1,65 +1,244 @@
-
+let cookie = getCookie("data");
 let learning_list = new Array();
-var today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
-var date = new Date();//today의 Date를 세어주는 역할
-let categories = new Array(8);
-let categories_btn = new Array(8);
+let today = new Date();//오늘 날짜//내 컴퓨터 로컬을 기준으로 today에 Date 객체를 넣어줌
+let date = new Date();//today의 Date를 세어주는 역할
+let categories = new Array();
+let categories_btn = new Array();
 let child_category = new Map();
+let parent_category = new Array();
+let member_list = new Array();
 
-console.log(getCookie("data"));
 
-function initialize_categories(){
-    for(let i=0; i<8; i++){
-        categories[i] = new Array();
-    }
-    
-    for(let i=0; i<8; i++){
-    
-            categories_btn[i] = document.querySelector('.category'+(i+6)+'__btn');
-            categories_btn[i].addEventListener('click', (event) =>{    
-            make_problem_table(categories[i], i+6);
-        })
-    }    
+if(cookie==null){
+    location.href = "login.html";
+}else if (cookie.memberType != "M"){
+    history.back();
 }
 
-initialize_categories();
-parent_category_inquiry();
+
+parent_category_inquiry()
+    .then(child_category_inquiry)
+
 get_all_learning_list();
+
 get_member_list();  //대상자 목록 받아오기
 
-let visual_problems = ['같은그림찾기(하)', '같은도형찾기', '반쪽그림따라그리기', '특정글자찾기', '틀린그림찾기', '특정인물찾기', '같은글미잇기', '반쪽그림잇기', '이름찾아적기', '같은그림찾기(중)'];
-let concentration_problems = ['미로찾기', '사다리타기', '색칠하기', '기념일 색칠하기', '같은 숫자 연결하기', '화투 색칠하기', '글자색깔맞추기', '선따라 그리기', '따라그리기(중)', '따라그리기(하)'];
-let thinking_problems = ['물건개수 맞추기', '4x4스도쿠', '개수맞추기', '범주찾기', '주제와다른것찾기', '시장물건 계산하기', '주사위 계산하기', '열매개수세기', '숫자 나열하기'];
-let language_problems = ['빈칸채우기', '초성맞추기', '동물속담맞추기', '끝말잇기', '단어와 그림맞추기', '단어만들기', '명언따라쓰고읽기', '문장따라말하기'];
-let remembrance_problems = ['기념일 회상하기', '요리재료 맞추기', '식재료 구분하기', '옛물건 회상하기', '정보 기억하기', '음식 회상하기', '사물회상하기', '계절 회상하기', '옛놀이 회상하기'];
-let life_problems = ['시간 맞추기', '야외활동 함께하기', '실내활동 함께하기', '집안일 함께하기', '냉장고 식재료 찾기', '표정 맞추기', '실내운동 함께하기', '물건의 용도 알기'];
+    function parent_category_inquiry(){
+    
+        return new Promise((resolve, reject) => {
+    
+            $.ajax({
+                type: 'GET',
+                url: 'http://13.209.38.201:8080/learning-categories/parents',
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json'
+            }).done(function (r) {
+                if (r.status == "OK") {
+                    console.log(r.data);
+                    resolve(r.data);
+                } else {
+                    reject(r);
+                    // alert('통신 실패');
+                }
+            }).fail(function (r) {
+                reject(r);
+                console.log(r);
+                // alert('서버 오류');
+            });
+        })
+    }
+    
+    function child_category_inquiry(parent_categories){
+    
+    
+        return new Promise((resolve, reject) => {
+    
+            parent_categories.forEach(parent_element => {
+                if(parent_element.id != 0)
+                    {
+                        parent_category.push(
+                            {
+                                "id": parent_element.id,
+                                "name": parent_element.name
+                            }
+                        );
+    
+                        $.ajax({
+                            type: 'GET',
+                            url: 'http://13.209.38.201:8080/learning-categories/children?parentId='+parent_element.id,
+                            contentType: 'application/json; charset=utf-8',
+                            dataType: 'json'
+                        }).done(function (r) {
+                            if (r.status == "OK") {
+                                console.log(r.data);
+                                r.data.forEach(child_element => {
+                                    child_category.set(child_element.id, child_element.name);
+                                })
+                                make_cateogry_table(parent_element,r.data);
+                                categories = new Array(child_category.size);
+                            } else {
+                                // alert('통신 실패');
+                            }
+                        }).fail(function (r) {
+                            // alert('서버 오류');
+                        });
+                    }
+            })
+    
+        });
+    }
+    
 
-let category4 = new Array();
-let category5 = new Array();
-let category6 = new Array();
-let category7 = new Array();
-let category8 = new Array();
+function make_cateogry_table(parent, children){
+    console.log(children);
+    let categoryTable = document.querySelector('.problem-category__table');
+    let tag= false;
 
-// let data = { "name": "-", "briefDescription":"", "fullDescription":"", "url": "", "categoryId": 0 };
-// console.log(data);
-// $.ajax({
-//     type: 'POST ',
-//     url: 'http://13.209.38.201:8080/learnings/new',
-//     data: data,
-//     contentType: 'application/json; charset=utf-8',
-//     dataType: 'json'
-// }).done(function (r) {
-//     if (r.status == "OK") {
-//         // console.log(r.data);
-//         alert('등록 성공');
-//     } else {
-//         alert('통신 실패');
-//     }
-// }).fail(function (r) {
-//     alert('서  버 오류');
-// });
+    children.forEach(child => {
 
-var member_list = new Array();
+        let row = document.createElement('tr');
+        let childrenHtml = "";
+
+        if(tag == false){
+            // 제공 영역
+            childrenHtml += "<td rowspan = "+children.length+"> "+parent.name+" </td>";
+            // row.appendChild(childrenHtml);
+
+            tag = true;
+        }
+
+        // 영역 분류
+        childrenHtml += "<td> "+child.name+" </td>";
+    
+        // 문제 선택 버튼
+        childrenHtml += "<td> <button onclick='get_learning_list("+child.id+")' class='category"+child.id+"__btn problem-selection-btn'>문제 선택</button></td>";
+
+        row.innerHTML = childrenHtml;
+        categoryTable.appendChild(row);
+    });
+
+    // 처음 화면 뜰 때 첫 번째 카테고리를 테이블에 표시해줌
+    console.log(child_category.keys().next().value);
+    get_learning_list(child_category.keys().next().value);
+}
+
+
+//러닝 목록 받아오기
+function get_learning_list(childrenId) {
+    let data = { "categoryId": childrenId };
+    console.log(data);
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/learnings',
+        data: data,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            make_problem_table(r.data, childrenId);
+            // console.log(r.data);
+            // alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        // alert('서버 오류');
+    });
+}
+
+function make_problem_table(problems, category_num) {
+    
+    let category_name = document.getElementById("dynamic-header");
+    category_name.innerHTML = child_category.get(category_num) + " 문제 리스트";
+
+    let cnt = 0;
+    const problems_table = document.querySelector('.problems__table');
+    while (problems_table.rows.length > 1)
+        problems_table.deleteRow(1);
+    while (true) {
+        if (cnt == 18)
+            break;
+
+        if ((cnt) % 3 == 0)
+            var row = problems_table.insertRow();
+
+        cell = row.insertCell();
+        cell.classList.add('problems__td');
+        if (cnt < problems.length) {
+            cell.innerHTML = problems[cnt].name;
+        }
+
+        cnt++;
+    }
+}
+
+
+function get_all_learning_list() {
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/learnings/all',
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            //console.log(r.data);
+            set_learning_category(r.data);
+            // console.log(r.data);
+            // alert('통신 성공');
+        } else {
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        // alert('서버 오류');
+    });
+}
+
+function set_learning_category(data) {
+    
+    // category4.push({ "id": 0, "name": '-' });
+    // category5.push({ "id": 0, "name": '-' });
+    // category6.push({ "id": 0, "name": '-' });
+    // category7.push({ "id": 0, "name": '-' });
+    // category8.push({ "id": 0, "name": '-' });
+    console.log(data);
+    data.forEach(learning => {
+        learning_list.push({ "id": learning.id, "name": learning.name });
+
+        // switch (learning.categoryId) {
+        //     case 6:
+        //         categories[0].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 7:
+        //         categories[1].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 8:
+        //         categories[2].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 9:
+        //         categories[3].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 10:
+        //         categories[4].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 11:
+        //         categories[5].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 12:
+        //         categories[6].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     case 13:
+        //         categories[7].push({ "id": learning.id, "name": learning.name });
+        //         break;
+        //     default:
+        //         break;
+        // }
+    });
+    buildCalendar();
+    //console.log(category4);
+
+}
+
 // 처음에 화면 들어오고 나서 데이터 받아오기
 // 대상자 목록 받아오기
 function get_member_list() {
@@ -80,6 +259,7 @@ function get_member_list() {
             // alert('통신 실패');
         }
     }).fail(function (r) {
+        console.log(r);
         // alert('서버 오류');
     });
 
@@ -111,77 +291,6 @@ function make_member_table(member_list) {
         cell = row.insertCell();
         cell.innerHTML = member.grade;
     });
-}
-
-
-function get_all_learning_list() {
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learnings/all',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            //console.log(r.data);
-            set_learning_category(r.data);
-            // console.log(r.data);
-            // alert('통신 성공');
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
-}
-
-function set_learning_category(data) {
-
-    // category4.push({ "id": 0, "name": '-' });
-    // category5.push({ "id": 0, "name": '-' });
-    // category6.push({ "id": 0, "name": '-' });
-    // category7.push({ "id": 0, "name": '-' });
-    // category8.push({ "id": 0, "name": '-' });
-    console.log(data);
-    data.forEach(learning => {
-        learning_list.push({ "id": learning.id, "name": learning.name });
-
-        switch (learning.categoryId) {
-            case 6:
-                categories[0].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 7:
-                categories[1].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 8:
-                categories[2].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 9:
-                categories[3].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 10:
-                categories[4].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 11:
-                categories[5].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 12:
-                categories[6].push({ "id": learning.id, "name": learning.name });
-                break;
-            case 13:
-                categories[7].push({ "id": learning.id, "name": learning.name });
-                break;
-            default:
-                break;
-        }
-    });
-
-    make_problem_table(categories[0],6);
-    
-    let category_name = document.getElementById("dynamic-header");
-    category_name.innerHTML ="시지각 영역" + " 문제 리스트";
-    buildCalendar();
-    //console.log(category4);
-
 }
 
 var doMonth = new Date(today.getFullYear(), today.getMonth(), 1);
@@ -306,7 +415,7 @@ function post_learning_schedule(data) {
     }).done(function (r) {
         if (r.status == "CREATED") {
             
-            alert('post_learning_schedule success');
+            // alert('post_learning_schedule success');
         } else {
             console.log(r.status);
             alert('post_learning_schedule failed');
@@ -545,99 +654,4 @@ function create_last_row(learning_time,lastEmptyCnt,year,month) {
             tempEmptyCnt--;
         }
     }
-}
-
-
-
-//러닝 목록 받아오기
-function get_learning_list(childrenId) {
-    let data = { "childrenId": childrenId };
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learnings',
-        data: data,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            make_member_table(r.data);
-            console.log(r.data);
-            alert('통신 성공');
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
-}
-
-
-
-function make_problem_table(problems, category_num) {
-
-    
-console.log(child_category);
-    let category_name = document.getElementById("dynamic-header");
-    category_name.innerHTML = child_category.get(category_num) + " 문제 리스트";
-
-    let cnt = 0;
-    const problems_table = document.querySelector('.problems__table');
-    while (problems_table.rows.length > 1)
-        problems_table.deleteRow(1);
-    while (true) {
-        if (cnt == 18)
-            break;
-
-        if ((cnt) % 3 == 0)
-            var row = problems_table.insertRow();
-
-        cell = row.insertCell();
-        cell.classList.add('problems__td');
-        if (cnt < problems.length) {
-            cell.innerHTML = problems[cnt].name;
-        }
-
-        cnt++;
-    }
-}
-
-function parent_category_inquiry(){
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learning-categories/parents',
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r.data);
-            r.data.forEach(parent_category => {
-                child_category_inquiry(parent_category.id);
-            })
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
-}
-
-function child_category_inquiry(parent_category){
-    
-    $.ajax({
-        type: 'GET',
-        url: 'http://13.209.38.201:8080/learning-categories/children?parentId='+parent_category,
-        contentType: 'application/json; charset=utf-8',
-        dataType: 'json'
-    }).done(function (r) {
-        if (r.status == "OK") {
-            console.log(r);
-            r.data.forEach(element => {
-                child_category.set(element.id, element.name);
-            })
-        } else {
-            // alert('통신 실패');
-        }
-    }).fail(function (r) {
-        // alert('서버 오류');
-    });
 }

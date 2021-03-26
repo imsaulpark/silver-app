@@ -1,4 +1,12 @@
 let managerMap = new Map()
+let cookie = getCookie("data");
+
+if(cookie==null){
+    location.href = "login.html";
+}else if (cookie.memberType != "M"){
+    history.back();
+}
+
 
 call_get_member_list();
 

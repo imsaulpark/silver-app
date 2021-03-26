@@ -1,4 +1,14 @@
+let cookie = getCookie("data");
+
 get_payment_item();
+
+
+if(cookie==null){
+    location.href = "login.html";
+}else if (cookie.memberType != "M"){
+    history.back();
+}
+
 
 function get_center_information(price,month,id) {
 
