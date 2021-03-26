@@ -441,10 +441,6 @@ p {
   min-width: 300px;
 }
 
-.person-table__header__email {
-  min-width: 300px;
-}
-
 .person-table__header__phone {
   min-width: 300px;
 }
@@ -483,6 +479,10 @@ p {
 
 .person-table__header__file {
   min-width: 300px;
+}
+
+.person-table__header__membership {
+  min-width: 150px;
 }
 
 .logout-btn {

@@ -107,6 +107,13 @@ function make_center_table(center_list, filter, value) {
             input.classList.add('brief_description');
             input.classList.add("selector"+center.id);
             cell.appendChild(input);
+
+            // membership
+            cell = row.insertCell();
+            if(center.status=="NOT_PAYED")
+                cell.innerHTML = "미가입";
+            else
+                cell.innerHTML = "가입중";
            
 
             //변경 버튼
@@ -241,6 +248,10 @@ function add() {
     input.classList.add('brief_description');
     input.classList.add("created"+(center_table.rows.length-1));
     cell.appendChild(input);
+
+    // membership
+    cell = row.insertCell();
+    cell.innerHTML = "미가입";
 
     //저장 버튼
     cell = row.insertCell();
