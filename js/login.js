@@ -31,7 +31,7 @@ button.addEventListener('click', () => {
 			if(r.data.type == "M")
             	location.href="schedule.html";
 			else if(r.data.type == "A")
-				location.href = "company_manager.html";
+				location.href = "managers.html";
 			else
 				alert("접근 권한이 없습니다.");
         }

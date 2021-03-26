@@ -582,10 +582,8 @@ p {
   padding: 1px 10px;
   border-radius: 20px;
   margin: 10px;
-}
-
-.payment-p {
   color: var(--color-white);
+  font-size: var(--font-regular);
 }
 
 #payment {
