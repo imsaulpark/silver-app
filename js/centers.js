@@ -50,7 +50,15 @@ function make_center_table(center_list, filter, value) {
     let tag= false;
     if(value == undefined)
         tag = true;
+
     center_list.forEach(center => {
+
+    if(filter == "status"){
+        if(value == "미가입")
+            value = "NOT_PAYED";
+        else if(value == "가입")
+            value = "PAYED";
+    }
 
     // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && center[filter] == value ))
@@ -267,6 +275,8 @@ function add() {
     text = document.createTextNode("저장");
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
+
+    cell = row.insertCell();
 }
 
 function save(row_num){

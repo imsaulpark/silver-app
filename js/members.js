@@ -414,6 +414,7 @@ function add() {
     text = document.createTextNode("저장");
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
+    cell = row.insertCell();
 }
 
 function save(row_num){
