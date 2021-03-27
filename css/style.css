@@ -153,6 +153,7 @@ p {
 
 .menu-list__item {
   margin-bottom: 10px;
+  font-size: var(--font-regular);
 }
 
 #person-list {
@@ -510,13 +511,18 @@ p {
   border-radius: var(--size-border-radius);
 }
 
-.create-btn {
+.save-btn {
   background-color: green;
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;
   border-radius: var(--size-border-radius);
+}
+
+.create-btn {
+  font-size: 30px;
+  margin-top: 6px;
 }
 
 /* contents page */
@@ -566,8 +572,7 @@ p {
 .problem-list__top {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  /* align-items: center; */
+  align-items: center;
   margin-bottom: 10px;
 }
 

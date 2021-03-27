@@ -271,7 +271,7 @@ function add() {
 
     //저장 버튼
     cell = row.insertCell();
-    cell.innerHTML += " <button onclick='save("+(center_table.rows.length-1)+")' class='create-btn' />";
+    cell.innerHTML += " <button onclick='save("+(center_table.rows.length-1)+")' class='save-btn' />";
     text = document.createTextNode("저장");
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
