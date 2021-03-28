@@ -165,10 +165,9 @@ p {
 }
 
 .menu-list__item {
-  margin-bottom: 10px;
-  font-size: var(--font-regular);
-  color: black;
-  text-decoration: underline;
+  margin-bottom: 20px;
+  font-size: 19px;
+  color: var(--color-pretty-grey);
 }
 
 #person-list {
