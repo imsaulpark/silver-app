@@ -130,24 +130,26 @@ p {
   background-color: var(--color-pretty-grey);
   color: var(--color-white);
   display: flex;
+  margin: 0;
   justify-content: space-between;
   align-items: center;
   height: 70px;
+  min-width: 1200px;
+  padding: 12px;
 }
 
 .navbar__logo {
-  margin: 15px;
   font-size: 25px;
+  display: inline;
 }
 
 .navbar__menu {
-  display: flex;
-  margin: 5px;
   font-size: 18px;
+  float: right;
 }
 
 .navbar__menu__item {
-  margin: 0 10px;
+  display: inline;
 }
 
 .section-container {
@@ -221,7 +223,7 @@ p {
 }
 
 .table-box td {
-  width: 160px;
+  min-width: 120px;
   height: 50px;
 }
 
@@ -256,15 +258,16 @@ p {
 
 .problems__table {
   min-height: 305px;
-  min-width: 450px;
+  min-width: 350px;
+}
+
+.problems__table td {
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .problems__table th {
   height: 50px;
-}
-
-.problems__table td {
-  min-width: 150px;
 }
 
 .remark {
@@ -336,7 +339,7 @@ p {
 }
 
 #calendar td {
-  min-width: 150px;
+  min-width: 120px;
 }
 
 .calendar__index {
@@ -415,7 +418,6 @@ p {
   width: 150px;
   padding-left: 12px;
   border: 1px solid #ddd;
-  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
   background-size: 30px; /* 화살표 크기 */
   border-radius: 4px;
   box-sizing: border-box;
@@ -439,7 +441,6 @@ p {
   width: 500px;
   padding-left: 12px;
   border: 1px solid #ddd;
-  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
   background-size: 30px; /* 화살표 크기 */
   border-radius: 4px;
   box-sizing: border-box;
@@ -475,7 +476,7 @@ p {
 }
 
 .person-table__header__number {
-  min-width: 100px;
+  min-width: 90px;
 }
 
 .person-table__header__type {
@@ -487,7 +488,7 @@ p {
 }
 
 .person-table__header__name {
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .person-table__header__sex {
@@ -499,7 +500,7 @@ p {
 }
 
 .person-table__header__zipcode {
-  min-width: 150px;
+  min-width: 110px;
 }
 
 .person-table__header__rrn {
@@ -507,15 +508,15 @@ p {
 }
 
 .person-table__header__email {
-  min-width: 200px;
+  min-width: 170px;
 }
 
 .person-table__header__phone {
-  min-width: 300px;
+  min-width: 170px;
 }
 
 .person-table__header__manager {
-  min-width: 150px;
+  min-width: 100px;
 }
 
 .person-table__header__grade {
@@ -535,11 +536,11 @@ p {
 }
 
 .person-table__header__brief-description {
-  min-width: 300px;
+  min-width: 200px;
 }
 
 .person-table__header__long-description {
-  min-width: 500px;
+  min-width: 300px;
 }
 
 .person-table__header__url {
@@ -547,11 +548,15 @@ p {
 }
 
 .person-table__header__file {
-  min-width: 300px;
+  min-width: 150px;
 }
 
 .person-table__header__membership {
   min-width: 150px;
+}
+
+.person-table__header__managing {
+  min-width: 180px;
 }
 
 .logout-btn {
@@ -567,7 +572,7 @@ p {
 
 .drop-btn {
   background-color: #c06014;
-  width: 100px;
+  min-width: 70px;
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;
@@ -576,7 +581,7 @@ p {
 
 .edit-btn {
   background-color: #424642;
-  width: 100px;
+  min-width: 70px;
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;
@@ -585,7 +590,7 @@ p {
 
 .save-btn {
   background-color: #424642;
-  width: 100px;
+  min-width: 70px;
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;

@@ -7,6 +7,17 @@ if(cookie==null){
     history.back();
 }
 
+// set_navbar_width();
+
+// function set_navbar_width(){
+//     let total_width = document.getElementById('menu').getBoundingClientRect().width + document.getElementById('person-list2').getBoundingClientRect().width;
+//     document.getElementById('navbar').style.width = total_width+"px";
+//     console.log(total_width);    
+// }
+
+// $(window).resize(set_navbar_width());
+
+
 
 call_get_member_list();
 
@@ -30,7 +41,6 @@ function get_member_list(filter, value, member_type) {
     }).done(function (r) {
         if (r.status == "OK") {
             member_list = r.data;
-            console.log(r.data);
             make_member_table(r.data, filter, value, member_type);
             // alert('통신 성공');
         } else {
@@ -92,8 +102,6 @@ function make_member_table(member_list,filter, value, member_type) {
         // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && member[filter] == value ))
         {
-            console.log(member_table);
-
             const row = member_table.insertRow();
 
             // 번호
