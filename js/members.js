@@ -53,14 +53,14 @@ function search(){
 }
 
 function remove_table(){
-    const member_table = document.querySelector('.person-table');
+    const member_table = document.querySelector('.list-table');
 
     while (member_table.rows.length > 1)
         member_table.deleteRow(1);
 }
 
 function make_member_table(member_list,filter, value, member_type) {
-    const member_table = document.querySelector('.person-table');
+    const member_table = document.querySelector('.list-table');
     let count = 1;
     let tag= false;
     if(value == undefined)
@@ -92,6 +92,8 @@ function make_member_table(member_list,filter, value, member_type) {
         // search를 사용했을 경우에는 search에 걸리지 않을 경우는 row를 만들지 않도록
         if(tag == true || (tag == false && member[filter] == value ))
         {
+            console.log(member_table);
+
             const row = member_table.insertRow();
 
             // 번호
@@ -301,7 +303,7 @@ function remove(member_id){
 }
 
 function add() {
-    const member_table = document.querySelector('.person-table');
+    const member_table = document.querySelector('.list-table');
     const row = member_table.insertRow();
 
     // 번호

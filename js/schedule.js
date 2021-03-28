@@ -586,7 +586,7 @@ function buildCalendar() {//현재 달 달력 만들기
 }
 
 function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
-    
+            console.log(calendar[0]);
             // 일상 생활 활동 영역 생성
             row = calendar.insertRow();
             cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할

@@ -2,10 +2,13 @@
   font-family: "Noto Sans KR", sans-serif;
 
   /* Color */
+  --color-light-green: #f3f4ed;
+  --color-preety-grey: #424642;
+  --color-blue-grey: #536162;
+  --color-orange-brown: #c06014;
   --color-white: #ffffff;
   --color-light-white: #eeeeee;
   --color-dark-white: #bdbdbd;
-  --color-pink: #f7f6e7;
   --color-dark-pink: #ff6863;
   --color-dark-grey: #4d4d4d;
   --color-grey: #616161;
@@ -116,23 +119,30 @@ p {
   margin: 4px 0;
 }
 
+#member-name {
+  margin-top: 3px;
+}
+
 /* Navbar */
 
 #navbar {
-  background-color: var(--color-dark-grey);
+  background-color: var(--color-preety-grey);
   color: var(--color-white);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  height: 70px;
 }
 
 .navbar__logo {
   margin: 15px;
+  font-size: 25px;
 }
 
 .navbar__menu {
   display: flex;
   margin: 5px;
+  font-size: 18px;
 }
 
 .navbar__menu__item {
@@ -144,7 +154,7 @@ p {
 }
 
 #menu {
-  background-color: var(--color-pink);
+  background-color: var(--color-light-green);
   min-width: 200px;
   min-height: 1400px;
   color: var(--color-grey);
@@ -154,6 +164,8 @@ p {
 .menu-list__item {
   margin-bottom: 10px;
   font-size: var(--font-regular);
+  color: black;
+  text-decoration: underline;
 }
 
 #person-list {
@@ -180,7 +192,7 @@ p {
 .person-control__add,
 .person-control__remove {
   width: 50%;
-  background-color: var(--color-light-grey);
+  background-color: var(--color-light-green);
   margin: 5px;
   padding: 5px;
   color: var(--color-white);
@@ -190,7 +202,7 @@ p {
 #content {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-pink);
+  background-color: var(--color-light-green);
   padding: 15px;
 }
 
@@ -214,9 +226,9 @@ p {
 }
 
 .problem-header {
-  background-color: #f4f9f9;
+  background-color: var(--color-blue-grey);
+  color: white;
   text-align: center;
-  font-weight: var(--weight-semi-bold);
 }
 
 .problem__button {
@@ -264,7 +276,7 @@ p {
 }
 
 .problem-selection-btn {
-  background-color: var(--color-light-grey);
+  background-color: var(--color-preety-grey);
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
@@ -273,7 +285,7 @@ p {
 }
 
 #calendar {
-  border-color: var(--color-light-grey);
+  border-color: var(--color-light-green);
 }
 
 .calendar__index {
@@ -297,7 +309,7 @@ p {
 }
 
 .schedule-update {
-  background-color: var(--color-light-grey);
+  background-color: var(--color-light-green);
   margin: 5px;
   padding: 5px 15px;
   font-size: var(--font-small);
@@ -330,6 +342,7 @@ p {
 .person-search__box {
   display: flex;
   padding-top: 20px;
+  margin: 10px 40px;
 }
 
 .person-search__box__button {
@@ -337,10 +350,11 @@ p {
   align-items: center;
   width: 150px;
   justify-content: center;
-  background-color: var(--color-dark-grey);
+  background-color: var(--color-preety-grey);
   color: var(--color-light-white);
   padding: 1px 10px;
   border-radius: var(--size-border-radius);
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
 .search-content__filter {
@@ -363,6 +377,7 @@ p {
   -ms-text-align-last: center;
   -moz-text-align-last: center;
   background-color: var(--color-white);
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
 .search-content__text {
@@ -381,6 +396,7 @@ p {
   outline: none;
   background-color: var(--color-white);
   margin-right: 10px;
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
 /* personal_member */
@@ -394,9 +410,9 @@ p {
 #person-list2 {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-pink);
+  background-color: var(--color-light-green);
   padding: 30px;
-  min-width: 1300px;
+  width: 100%;
   min-height: 100%;
 }
 
@@ -414,7 +430,7 @@ p {
 }
 
 .person-table__header__id {
-  min-width: 200px;
+  min-width: 100px;
 }
 
 .person-table__header__name {
@@ -426,19 +442,19 @@ p {
 }
 
 .person-table__header__address {
-  min-width: 400px;
+  min-width: 300px;
 }
 
 .person-table__header__zipcode {
-  min-width: 200px;
+  min-width: 150px;
 }
 
 .person-table__header__rrn {
-  min-width: 300px;
+  min-width: 200px;
 }
 
 .person-table__header__email {
-  min-width: 300px;
+  min-width: 200px;
 }
 
 .person-table__header__phone {
@@ -489,12 +505,15 @@ p {
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
-  padding: 1px 10px;
+  padding: 1px 5px;
   border-radius: var(--size-border-radius);
+  font-size: 18px;
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: bold;
 }
 
 .drop-btn {
-  background-color: red;
+  background-color: #c06014;
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
@@ -503,7 +522,7 @@ p {
 }
 
 .edit-btn {
-  background-color: var(--color-blue);
+  background-color: #424642;
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
@@ -512,7 +531,7 @@ p {
 }
 
 .save-btn {
-  background-color: green;
+  background-color: #424642;
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
@@ -529,10 +548,11 @@ p {
 #problem-list {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-pink);
+  background-color: var(--color-light-green);
   padding: 30px;
   min-width: 1300px;
   min-height: 100%;
+  width: 100%;
 }
 
 .brief_description {
@@ -600,43 +620,50 @@ p {
 
 /* table */
 
-.problem-table {
+.list-table {
   border-radius: 5px;
   font-size: 12px;
   font-weight: normal;
-  /* border: none; */
+  border: none;
   border-collapse: collapse;
-  width: 100%;
+  width: 90%;
   max-width: 100%;
   white-space: nowrap;
-  background-color: wheat;
+  background-color: white;
+  margin: 10px 40px 70px;
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
-.problem-table th:nth-child(odd) {
-  color: #ffffff;
-  background: #324960;
-}
-
-.problem-table tr:nth-child(even) {
-  background: #f8f8f8;
-}
-
-.problem-table th {
+.list-table th {
   color: #ffffff;
   background: #4fc3a1;
 }
 
-.problem-table td {
-  border-right: 1px solid #f8f8f8;
-  font-size: 12px;
+.list-table tr:nth-child(even) {
+  background: #f8f8f8;
 }
 
-.problem-table td,
-.problem-table th {
+.list-table th {
+  color: #ffffff;
+  background: var(--color-blue-grey);
+  border-color: var(--color-blue-grey);
+  font-size: 17px;
+  height: 50px;
+  font-weight: var(--font-regular);
+}
+
+.list-table td {
+  border-right: 1px solid #f8f8f8;
+  font-size: medium;
+  min-height: 65px;
+}
+
+.list-table td,
+.list-table th {
   text-align: center;
   padding: 8px;
 }
-
+/* 
 .problem-table tr:nth-child(odd) {
   background: none;
 }
@@ -648,4 +675,4 @@ p {
   border-right: 1px solid #e6e4e4;
 }
 .problem-table tr td:nth-child(even) {
-  border-right: 1px solid #e6e4e4;
+  border-right: 1px solid #e6e4e4; */

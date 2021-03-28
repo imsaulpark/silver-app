@@ -148,7 +148,7 @@ function make_problem_table(problem_list, categoryId) {
     category_name.innerHTML =child_category.get(categoryId) + " 문제 리스트";
 
 
-    const problem_table = document.querySelector('.problem-table');
+    const problem_table = document.querySelector('.list-table');
     while (problem_table.rows.length > 1)
         problem_table.deleteRow(1);
     problem_list.forEach(problem => {
@@ -276,7 +276,7 @@ function remove(problem_id){
 
 function add(){
 
-    const problem_table = document.querySelector('.problem-table');
+    const problem_table = document.querySelector('.list-table');
     
     const row = problem_table.insertRow();
     

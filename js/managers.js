@@ -62,14 +62,15 @@ function search(){
 }
 
 function remove_table(){
-    const member_table = document.querySelector('.person-table');
+    const member_table = document.querySelector('.list-table');
 
     while (member_table.rows.length > 1)
         member_table.deleteRow(1);
 }
 
 function make_member_table(member_list,filter, value, member_type) {
-    const member_table = document.querySelector('.person-table');
+
+    const member_table = document.querySelector('.list-table');
     let tag= false;
     if(value == undefined)
         tag = true;

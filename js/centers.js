@@ -38,14 +38,14 @@ function search(){
 }
 
 function remove_table(){
-    const center_table = document.querySelector('.person-table');
+    const center_table = document.querySelector('.list-table');
 
     while (center_table.rows.length > 1)
         center_table.deleteRow(1);
 }
 
 function make_center_table(center_list, filter, value) {
-    const center_table = document.querySelector('.person-table');
+    const center_table = document.querySelector('.list-table');
     
     let tag= false;
     if(value == undefined)
@@ -208,7 +208,7 @@ function remove(center_id){
 }
 
 function add() {
-    const center_table = document.querySelector('.person-table');
+    const center_table = document.querySelector('.list-table');
 
     const row = center_table.insertRow();
 
