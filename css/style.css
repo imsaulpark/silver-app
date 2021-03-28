@@ -472,7 +472,6 @@ p {
 
 .transparent-border {
   border-right: transparent;
-  width: 120px;
 }
 
 .person-table__header__number {
@@ -576,6 +575,7 @@ p {
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;
+  margin-left: 10px;
   border-radius: var(--size-border-radius);
 }
 
@@ -590,7 +590,7 @@ p {
 
 .save-btn {
   background-color: #424642;
-  min-width: 70px;
+  min-width: 150px;
   height: 30px;
   color: var(--color-light-white);
   padding: 1px 10px;

@@ -139,11 +139,9 @@ function make_center_table(center_list, filter, value) {
             cell.children[0].appendChild(text);
             cell.classList.add('transparent-border');
 
-            //탈퇴 버튼
-            cell = row.insertCell();
             cell.innerHTML += " <button onclick='remove("+center.id+")' class='drop-btn' />";
             text = document.createTextNode("삭제");
-            cell.children[0].appendChild(text);
+            cell.children[1].appendChild(text);
             cell.classList.add('transparent-border');
         }
     });
@@ -276,7 +274,6 @@ function add() {
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
 
-    cell = row.insertCell();
 }
 
 function save(row_num){

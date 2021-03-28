@@ -213,10 +213,9 @@ function make_table_row(problem, problem_table){
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
 
-    cell = row.insertCell();
     cell.innerHTML += " <button onclick='remove("+problem.id+")' class='drop-btn' />";
     text = document.createTextNode("삭제");
-    cell.children[0].appendChild(text);
+    cell.children[1].appendChild(text);
     cell.classList.add('transparent-border');
 }
 
@@ -337,7 +336,6 @@ function add(){
     cell.children[0].appendChild(text);
     cell.classList.add('transparent-border');
 
-    cell = row.insertCell();
 }
 
 
