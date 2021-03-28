@@ -9,6 +9,34 @@ if(cookie==null){
     history.back();
 }
 
+show_center_information();
+
+function show_center_information(){
+    $.ajax({
+        type: 'GET',
+        url: 'http://13.209.38.201:8080/centers?id='+getCookie("data").centerId,
+        contentType: 'application/json; charset=utf-8',
+        dataType: 'json'
+    }).done(function (r) {
+        if (r.status == "OK") {
+            console.log(r.data);
+            
+            let centerInformationDiv = document.querySelector('.center-information');
+            let status = "미가입";
+            if(r.data.status != "NOT_PAYED")
+                status = "가입";
+            centerInformationDiv.innerHTML = "센터명: "+r.data.name+"<br> 멤버십 가입 상태: "+status;
+
+        } else {
+            reject(r);
+            // alert('통신 실패');
+        }
+    }).fail(function (r) {
+        console.log(r);
+        reject(r);
+        // alert('서버 오류');
+    });
+}
 
 function get_center_information(price,month,id) {
 

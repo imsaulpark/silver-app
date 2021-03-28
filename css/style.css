@@ -3,7 +3,7 @@
 
   /* Color */
   --color-light-green: #f3f4ed;
-  --color-preety-grey: #424642;
+  --color-pretty-grey: #424642;
   --color-blue-grey: #536162;
   --color-orange-brown: #c06014;
   --color-white: #ffffff;
@@ -86,7 +86,8 @@ td {
 }
 
 .person-table__header {
-  background-color: #f4f9f9;
+  background-color: var(--color-blue-grey);
+  color: white;
 }
 
 /* Typography */
@@ -126,7 +127,7 @@ p {
 /* Navbar */
 
 #navbar {
-  background-color: var(--color-preety-grey);
+  background-color: var(--color-pretty-grey);
   color: var(--color-white);
   display: flex;
   justify-content: space-between;
@@ -169,8 +170,8 @@ p {
 }
 
 #person-list {
-  min-width: 400px;
-  padding: 15px;
+  min-width: 450px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
 }
@@ -217,18 +218,28 @@ p {
 
 .table-box {
   background-color: white;
-  padding: 15px;
+}
+
+.table-box td {
+  width: 160px;
+  height: 50px;
 }
 
 .problem-category__table {
   min-height: 300px;
-  min-width: 350px;
+  min-width: 360px;
+}
+
+.problem-category__table td {
+  min-width: 120px;
 }
 
 .problem-header {
   background-color: var(--color-blue-grey);
   color: white;
   text-align: center;
+  height: 50px;
+  max-height: 50px;
 }
 
 .problem__button {
@@ -245,12 +256,15 @@ p {
 
 .problems__table {
   min-height: 305px;
-  min-width: 500px;
+  min-width: 450px;
 }
 
-.problems__td {
-  height: 55px;
-  width: 33.3%;
+.problems__table th {
+  height: 50px;
+}
+
+.problems__table td {
+  min-width: 150px;
 }
 
 .remark {
@@ -265,7 +279,7 @@ p {
 }
 
 .schedule {
-  padding: 15px;
+  padding: 30px;
 }
 
 .schedule__header {
@@ -275,8 +289,14 @@ p {
   margin-bottom: 10px;
 }
 
+.day-week {
+  background: var(--color-blue-grey);
+  border-color: transparent;
+  color: white;
+}
+
 .problem-selection-btn {
-  background-color: var(--color-preety-grey);
+  background-color: var(--color-pretty-grey);
   width: 100px;
   height: 30px;
   color: var(--color-light-white);
@@ -284,18 +304,49 @@ p {
   border-radius: var(--size-border-radius);
 }
 
+.content__middle {
+  margin-bottom: 15px;
+}
+
+.content__bottom {
+  margin: 0px 15px 15px 15px;
+  font-size: var(--font-regular);
+}
+
+.learning-information {
+  display: block;
+}
+
+.learning-information-url {
+  display: inline;
+}
+
+.learning-selection {
+  font-size: 15px;
+}
+
+.problems__table td {
+  text-overflow: hidden;
+}
+
 #calendar {
   border-color: var(--color-light-green);
+  margin: 10px 40px 70px;
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
+}
+
+#calendar td {
+  min-width: 150px;
 }
 
 .calendar__index {
-  background-color: #f4f9f9;
+  background-color: var(--color-light-green);
   text-align: center;
   width: 12.5%;
 }
 
 .calendar__number {
-  background-color: #f4f9f9;
+  background-color: var(--color-light-green);
   width: 12.5%;
 }
 
@@ -309,12 +360,15 @@ p {
 }
 
 .schedule-update {
-  background-color: var(--color-light-green);
+  background-color: var(--color-pretty-grey);
   margin: 5px;
   padding: 5px 15px;
   font-size: var(--font-small);
   color: var(--color-white);
   border-radius: var(--size-border-radius);
+  position: relative;
+  left: 40px;
+  box-shadow: 0px 35px 50px rgba(0, 0, 0, 0.2);
 }
 
 .bo_w_select {
@@ -322,7 +376,6 @@ p {
   padding: 10px; /* 내부여백 */
   padding-left: 12px;
   border: 1px solid #ddd;
-  background: url(./arrow_down_18dp.png) no-repeat right 50%; /* 화살표 위치 */
   background-size: 30px; /* 화살표 크기 */
   border-radius: 4px;
   box-sizing: border-box;
@@ -350,7 +403,7 @@ p {
   align-items: center;
   width: 150px;
   justify-content: center;
-  background-color: var(--color-preety-grey);
+  background-color: var(--color-pretty-grey);
   color: var(--color-light-white);
   padding: 1px 10px;
   border-radius: var(--size-border-radius);
@@ -598,20 +651,32 @@ p {
 
 /* payment */
 
-.payment-btn {
-  background-color: var(--color-light-grey);
-  width: 150px;
-  height: 150px;
-  color: var(--color-light-white);
-  padding: 1px 10px;
-  border-radius: 20px;
-  margin: 10px;
-  color: var(--color-white);
-  font-size: var(--font-regular);
+#payment {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-light-green);
+  padding: 30px;
+  width: 100%;
+  min-height: 100%;
+  align-items: center;
 }
 
-#payment {
-  margin: 10px;
+.payment-btn {
+  background-color: var(--color-blue-grey);
+  width: 200px;
+  height: 200px;
+  color: var(--color-light-white);
+  padding: 1px 10px;
+  border-radius: 30px;
+  margin: 30px;
+  color: var(--color-white);
+  font-size: 22px;
+}
+
+.center-information {
+  margin: 30px;
+  font-size: 25px;
+  text-align: center;
 }
 
 .selected-date {

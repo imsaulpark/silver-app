@@ -164,13 +164,55 @@ function make_problem_table(problems, category_num) {
             var row = problems_table.insertRow();
 
         cell = row.insertCell();
+        
         cell.classList.add('problems__td');
         if (cnt < problems.length) {
-            cell.innerHTML = problems[cnt].name;
+            cell.innerHTML += " <button onclick='show_learning_information(\""+(problems[cnt].name)+"\", \""+problems[cnt].briefDescription+"\", \""+problems[cnt].url+"\")\' class='learning-selection' />";
+            text = document.createTextNode(problems[cnt].name);
+            cell.children[0].appendChild(text);
+            cell.classList.add('transparent-border');
         }
 
         cnt++;
     }
+}
+
+
+function show_learning_information(learning_name, learning_description, learning_url){
+    let div = document.querySelector('.content__bottom');
+    div.innerHTML = '';
+
+    var p2 = document.createElement('p');
+
+    let name_text  = document.createElement('p');
+    let description_text = document.createElement('p');
+    let url_text = document.createElement('p');
+    let url_tag = document.createElement('a');
+
+    name_text.innerHTML = "문제 이름: "+learning_name;
+
+
+    console.log(learning_description);
+
+    if(learning_description == "null" || learning_description == "" )
+        description_text.innerHTML = "문제 설명: 존재하지 않습니다.";
+    else{
+        description_text.innerHTML = "문제 설명: "+learning_description;
+    }
+
+    if(learning_url == "null"|| learning_url == "" ){
+        url_text.innerHTML = "링크: 존재하지 않습니다.";
+    }else{
+        url_text.innerHTML = "링크: ";
+        url_tag.href = learning_url;
+        url_tag.innerHTML = learning_url;
+    }
+    url_text.className = 'learning-information-url';
+
+    div.appendChild(name_text);
+    div.appendChild(description_text);
+    div.appendChild(url_text);
+    div.append(url_tag);
 }
 
 
@@ -328,8 +370,6 @@ function get_learning_schedule(obj, memberId) {
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "OK") {
-            console.log(r.data);
-
             set_learning_schedule(r.data,year,month,day);
 
             // alert('센터 러닝 스케줄 통신 성공');
@@ -360,6 +400,11 @@ function set_learning_schedule(learning_schedule,year,month,day) {
             select_box[1].value = learningIds[1];
             select_box[2].value = learningIds[2];
             select_box[3].value = learningIds[3];
+        }else{
+            select_box[0].value = 0;
+            select_box[1].value = 0;
+            select_box[2].value = 0;
+            select_box[3].value = 0;
         }
     }
 }
@@ -414,7 +459,7 @@ function post_learning_schedule(data) {
         dataType: 'json'
     }).done(function (r) {
         if (r.status == "CREATED") {
-            
+            alert("일정이 업데이트 되었습니다.");
             // alert('post_learning_schedule success');
         } else {
             console.log(r.status);
@@ -586,7 +631,6 @@ function buildCalendar() {//현재 달 달력 만들기
 }
 
 function create_schedule_row(learning_time,emptyCnt,year,month,tbCalendar){
-            console.log(calendar[0]);
             // 일상 생활 활동 영역 생성
             row = calendar.insertRow();
             cell = row.insertCell();//열 한칸한칸 계속 만들어주는 역할
